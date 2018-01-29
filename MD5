@@ -1,6 +1,6 @@
-67f97c2cc7b22fa3acbefbb9398eaf5a *DESCRIPTION
+62d6edfa28d7e6413e851bf593281a7a *DESCRIPTION
 59ee5c1b908eedbb9faee53b49e22558 *LICENSE.note
-540a455f207281ac85bbeeacf0f0e6f2 *NAMESPACE
+64054dba5ce5832345a059241df93803 *NAMESPACE
 9e7f8b67adbdfdf3c8dba91936869b5f *R/RcppExports.R
 2db4bbcfae2c6f3ef6530aaed8c76f24 *R/aaa.R
 dbdb3535af11004016b87194482bf7e4 *R/cappedPath.R
@@ -51,7 +51,6 @@ f05bd8fd7c239025dbaaa79913410b9b *R/textAlong.R
 fdbae3f31cc12e6009f88f4eda1ab89f *R/theme_graph.R
 c287ea26463fc01971a8577062a6f4e3 *R/tree_apply.R
 aae947aaa5666cf4d2fd2f3ee2678ba2 *R/utils.R
-191f57b50e5b4a2f011199990a5257cc *README.md
 ff47c4aa6f355c634851d02fe75b2b6d *build/vignette.rds
 1bc9dd3b58429479ae99af336f006297 *data/flare.rda
 f69db9aac415341c308621a6b7f28156 *data/highschool.rda
@@ -127,7 +126,7 @@ c0462a6142f0bf55b00959802f34c968 *man/scale_type.geometry.Rd
 e0805649833f13ae7c3626781fa7765e *man/tree_apply.Rd
 6a373d790ec622690107a42f884a36c4 *man/whigs.Rd
 3f626bd507fa76db164e440948b67c26 *src/RcppExports.cpp
-17ca2b08f8fb44f5a72e02fe23626619 *src/circlePack.cpp
+2874326c8b668f1d7d03eff63c105338 *src/circlePack.cpp
 97eb6276ed860f024fa07241c61eede9 *src/iciclePlot.cpp
 fa7ee218513413ff31dbd4d96b927467 *src/init.c
 118b1ecfab158d99f9c8a65e6f0b6d59 *src/lineCutter.cpp
