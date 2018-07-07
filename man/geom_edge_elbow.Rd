@@ -2,7 +2,6 @@
 % Please edit documentation in R/geom_edge_elbow.R
 \name{geom_edge_elbow}
 \alias{geom_edge_elbow}
-\alias{geom_edge_elbow}
 \alias{geom_edge_elbow2}
 \alias{geom_edge_elbow0}
 \title{Draw edges as elbows}
@@ -38,18 +37,18 @@ See \code{\link{get_edges}} for more details on edge extraction.}
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{arrow}{Arrow specification, as created by \code{\link[grid]{arrow}}}
+\item{arrow}{Arrow specification, as created by \code{\link[grid:arrow]{grid::arrow()}}.}
 
 \item{flipped}{Logical, Has the layout been flipped by reassigning the
 mapping of x, y etc?}
 
 \item{n}{The number of points to create along the path.}
 
-\item{lineend}{Line end style (round, butt, square)}
+\item{lineend}{Line end style (round, butt, square).}
 
-\item{linejoin}{Line join style (round, mitre, bevel)}
+\item{linejoin}{Line join style (round, mitre, bevel).}
 
-\item{linemitre}{Line mitre limit (number greater than 1)}
+\item{linemitre}{Line mitre limit (number greater than 1).}
 
 \item{label_colour}{The colour of the edge label. If \code{NA} it will use
 the colour of the edge.}
@@ -79,9 +78,11 @@ to add to the label in case of \code{angle_calc} is either 'along' or 'across'}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
-\code{FALSE} never includes, and \code{TRUE} always includes.}
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
+\item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
@@ -192,6 +193,8 @@ aesthetics.
 }
 
 \examples{
+# Can take some seconds to compute
+\dontrun{
 irisDen <- as.dendrogram(
   hclust(dist(iris[1:4],
               method='euclidean', ),
@@ -211,6 +214,7 @@ ggraph(irisDen, 'even') +
 
 ggraph(irisDen, 'dendrogram') +
   geom_edge_elbow0(aes(colour = class))
+}
 
 }
 \seealso{
@@ -225,3 +229,4 @@ Other geom_edge_*: \code{\link{geom_edge_arc}},
 \author{
 Thomas Lin Pedersen
 }
+\concept{geom_edge_*}

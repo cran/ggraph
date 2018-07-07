@@ -170,7 +170,7 @@ layout_igraph_igraph <- function(graph, algorithm, circular, offset = pi/2,
         }
     }
     extraData <- attr_df(graph)
-    layout <- cbind(x=layout[,1], y=layout[,2], extraData)
+    layout <- cbind(x=layout[,1], y=layout[,2], extraData[, !names(extraData) %in% c('x', 'y'), drop = FALSE])
     if (circular) {
         if (!algorithm %in% c('layout_as_tree', 'layout_with_sugiyama')) {
             stop('Circular layout only applicable to tree and DAG layout')
@@ -257,7 +257,7 @@ layout_igraph_dendrogram <- function(graph, circular = FALSE, offset = pi/2, dir
         nodes$y <- coords$y
     }
     extraData <- attr_df(graph)
-    nodes <- cbind(nodes, extraData)
+    nodes <- cbind(nodes, extraData[, !names(extraData) %in% names(nodes), drop = FALSE])
     nodes$circular <- circular
     nodes
 }
@@ -296,7 +296,7 @@ layout_igraph_manual <- function(graph, node.positions, circular) {
     }
     layout <- data.frame(x = node.positions$x, y = node.positions$y)
     extraData <- attr_df(graph)
-    layout <- cbind(layout, extraData)
+    layout <- cbind(layout, extraData[, !names(extraData) %in% names(layout), drop = FALSE])
     layout$circular <- FALSE
     layout
 }
@@ -353,7 +353,7 @@ layout_igraph_linear <- function(graph, circular, sort.by = NULL, use.numeric = 
         nodes$y <- coords$y
     }
     extraData <- attr_df(graph)
-    nodes <- cbind(nodes, extraData)
+    nodes <- cbind(nodes, extraData[, !names(extraData) %in% names(nodes), drop = FALSE])
     nodes$circular <- circular
     nodes
 }
@@ -442,7 +442,7 @@ layout_igraph_treemap <- function(graph, algorithm = 'split', weight = NULL, cir
                          leaf = degree(graph, mode = direction) == 0,
                          depth = node_depth(graph, mode = direction))
     extraData <- attr_df(graph)
-    layout <- cbind(layout, extraData)
+    layout <- cbind(layout, extraData[, !names(extraData) %in% names(layout), drop = FALSE])
     layout
 }
 #' Calculate nodes as circles packed within their parent circle
@@ -507,7 +507,7 @@ layout_igraph_circlepack <- function(graph, weight = NULL, circular = FALSE, sor
                          leaf = degree(graph, mode = direction) == 0,
                          depth = node_depth(graph, mode = direction))
     extraData <- attr_df(graph)
-    layout <- cbind(layout, extraData)
+    layout <- cbind(layout, extraData[, !names(extraData) %in% names(layout), drop = FALSE])
     layout
 }
 #' Calculate nodes as areas dividing their parent
@@ -609,7 +609,7 @@ layout_igraph_partition <- function(graph, weight = NULL, circular = FALSE, heig
     layout$leaf = degree(graph, mode = direction) == 0
     layout$depth = node_depth(graph, mode = direction)
     extraData <- attr_df(graph)
-    layout <- cbind(layout, extraData)
+    layout <- cbind(layout, extraData[, !names(extraData) %in% names(layout), drop = FALSE])
     layout
 }
 #' Place nodes in a Hive Plot layout
@@ -834,7 +834,7 @@ layout_igraph_hive <- function(graph, axis, axis.pos = NULL, sort.by = NULL, div
     node.pos <- do.call(rbind, node.pos)
     node.pos <- node.pos[order(node.pos$node), names(node.pos) != 'node']
     extraData <- attr_df(graph)
-    node.pos <- cbind(node.pos, extraData)
+    node.pos <- cbind(node.pos, extraData[, !names(extraData) %in% names(node.pos), drop = FALSE])
     attr(node.pos, 'graph') <- graph
     node.pos
 }

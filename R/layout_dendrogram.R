@@ -84,7 +84,7 @@ layout_dendrogram_dendrogram <- function(graph, circular = FALSE, offset = pi/2,
     extraPar <- bind_rows(extraPar)
     extraPar$ggraph.dummy <- NULL
     layout$nodePar <- NULL
-    layout <- cbind(layout, extraPar)
+    layout <- cbind(layout, extraPar[, !names(extraPar) %in% names(layout), drop = FALSE])
     layout <- layout[order(layout$ggraph.id), ]
     if (circular) {
         radial <- radial_trans(r.range = rev(range(layout$y)),

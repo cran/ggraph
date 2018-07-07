@@ -108,6 +108,8 @@
 #' @family geom_edge_*
 #'
 #' @examples
+#' # Can take some seconds to compute
+#' \dontrun{
 #' irisDen <- as.dendrogram(
 #'   hclust(dist(iris[1:4],
 #'               method='euclidean', ),
@@ -127,7 +129,8 @@
 #'
 #' ggraph(irisDen, 'dendrogram') +
 #'   geom_edge_elbow0(aes(colour = class))
-#'
+#' }
+#' 
 #' @rdname geom_edge_elbow
 #' @name geom_edge_elbow
 #'
@@ -180,7 +183,7 @@ StatEdgeElbow <- ggproto('StatEdgeElbow', Stat,
                                          index = rep(index[seq_len(n/2) + n/2],
                                                      length(circId))))
             pathCirc <- cbind(pathCirc, data[pathCirc$group, !names(data) %in%
-                                                 c('x', 'y', 'xend', 'yend')])
+                                                 c('x', 'y', 'xend', 'yend', 'group')])
         }
         if (any(!data$circular)) {
             pathLin <- lapply(which(!data$circular), function(i) {
@@ -204,7 +207,7 @@ StatEdgeElbow <- ggproto('StatEdgeElbow', Stat,
                     )
                 }
                 cbind(path, data[rep(i, nrow(path)), !names(data) %in%
-                                     c('x', 'y', 'xend', 'yend')])
+                                     c('x', 'y', 'xend', 'yend', 'group')])
             })
             pathLin <- do.call(rbind, pathLin)
 

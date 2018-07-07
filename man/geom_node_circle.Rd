@@ -72,3 +72,4 @@ Other geom_node_*: \code{\link{geom_node_arc_bar}},
 \author{
 Thomas Lin Pedersen
 }
+\concept{geom_node_*}

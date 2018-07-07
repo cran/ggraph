@@ -16,6 +16,7 @@
 #' }
 #'
 #' @useDynLib ggraph
+#' @importFrom Rcpp sourceCpp
 #'
 #' @import ggplot2
 #'
