@@ -7,37 +7,42 @@
 \title{Draw edges as diagonals}
 \usage{
 geom_edge_diagonal(mapping = NULL, data = get_edges(),
-  position = "identity", arrow = NULL, flipped = FALSE, n = 100,
-  lineend = "butt", linejoin = "round", linemitre = 1,
-  label_colour = "black", label_alpha = 1, label_parse = FALSE,
-  check_overlap = FALSE, angle_calc = "rot", force_flip = TRUE,
-  label_dodge = NULL, label_push = NULL, show.legend = NA, ...)
+  position = "identity", arrow = NULL, strength = 1,
+  flipped = FALSE, n = 100, lineend = "butt", linejoin = "round",
+  linemitre = 1, label_colour = "black", label_alpha = 1,
+  label_parse = FALSE, check_overlap = FALSE, angle_calc = "rot",
+  force_flip = TRUE, label_dodge = NULL, label_push = NULL,
+  show.legend = NA, ...)
 
 geom_edge_diagonal2(mapping = NULL, data = get_edges("long"),
-  position = "identity", arrow = NULL, flipped = FALSE, n = 100,
-  lineend = "butt", linejoin = "round", linemitre = 1,
-  label_colour = "black", label_alpha = 1, label_parse = FALSE,
-  check_overlap = FALSE, angle_calc = "rot", force_flip = TRUE,
-  label_dodge = NULL, label_push = NULL, show.legend = NA, ...)
+  position = "identity", arrow = NULL, strength = 1,
+  flipped = FALSE, n = 100, lineend = "butt", linejoin = "round",
+  linemitre = 1, label_colour = "black", label_alpha = 1,
+  label_parse = FALSE, check_overlap = FALSE, angle_calc = "rot",
+  force_flip = TRUE, label_dodge = NULL, label_push = NULL,
+  show.legend = NA, ...)
 
 geom_edge_diagonal0(mapping = NULL, data = get_edges(),
-  position = "identity", arrow = NULL, flipped = FALSE,
-  lineend = "butt", show.legend = NA, ...)
+  position = "identity", arrow = NULL, strength = 1,
+  flipped = FALSE, lineend = "butt", show.legend = NA, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
-or \code{\link[ggplot2]{aes_}}. By default x, y, xend, yend, group and
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}
+or \code{\link[ggplot2:aes_]{ggplot2::aes_()}}. By default x, y, xend, yend, group and
 circular are mapped to x, y, xend, yend, edge.id and circular in the edge
 data.}
 
 \item{data}{The return of a call to \code{get_edges()} or a data.frame
-giving edges in corrent format (see details for for guidance on the format).
-See \code{\link{get_edges}} for more details on edge extraction.}
+giving edges in correct format (see details for for guidance on the format).
+See \code{\link[=get_edges]{get_edges()}} for more details on edge extraction.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{arrow}{Arrow specification, as created by \code{\link[grid:arrow]{grid::arrow()}}.}
+
+\item{strength}{The strength of the curvature of the diagonal. \code{0} will
+result in a straight line while \code{1} will give the familiar S-shape.}
 
 \item{flipped}{Logical, Has the layout been flipped by reassigning the
 mapping of x, y etc?}
@@ -57,7 +62,7 @@ the colour of the edge.}
 the opacity of the edge.}
 
 \item{label_parse}{If \code{TRUE}, the labels will be parsed into expressions
-and displayed as described in \code{\link[grDevices]{plotmath}}.}
+and displayed as described in \code{\link[grDevices:plotmath]{grDevices::plotmath()}}.}
 
 \item{check_overlap}{If \code{TRUE}, text that overlaps previous text in the
 same layer will not be plotted.}
@@ -70,10 +75,10 @@ edge direction.}
 \item{force_flip}{Logical. If \code{angle_calc} is either 'along' or 'across'
 should the label be flipped if it is on it's head. Default to \code{TRUE}.}
 
-\item{label_dodge}{A \code{\link[grid]{unit}} giving a fixed vertical shift
+\item{label_dodge}{A \code{\link[grid:unit]{grid::unit()}} giving a fixed vertical shift
 to add to the label in case of \code{angle_calc} is either 'along' or 'across'}
 
-\item{label_push}{A \code{\link[grid]{unit}} giving a fixed horizontal shift
+\item{label_push}{A \code{\link[grid:unit]{grid::unit()}} giving a fixed horizontal shift
 to add to the label in case of \code{angle_calc} is either 'along' or 'across'}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
@@ -84,25 +89,83 @@ display.}
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 }
 \description{
-This geom draws edges as diagonal bezier curves as known from
-\href{https://github.com/mbostock/d3/wiki/SVG-Shapes#_diagonal}{d3.svg.diagonal}.
+This geom draws edges as diagonal bezier curves. The name comes from D3.js
+where this shape was called diagonals until it was renamed to
+\href{https://github.com/d3/d3-shape/blob/v1.3.5/README.md#links}{links}.
 A diagonal in this context is a quadratic bezier with the control points
 positioned halfway between the start and end points but on the same axis.
 This produces a pleasing fan-in, fan-out line that is mostly relevant for
-heirarchical layouts as it implies an overall directionality in the plot.
+hierarchical layouts as it implies an overall directionality in the plot.
 }
-\details{
+\section{Aesthetics}{
+
+\code{geom_edge_diagonal} and \code{geom_edge_diagonal0} understand the following
+aesthetics. Bold aesthetics are automatically set, but can be overridden.
+\itemize{
+\item \strong{x}
+\item \strong{y}
+\item \strong{xend}
+\item \strong{yend}
+\item \strong{circular}
+\item edge_colour
+\item edge_width
+\item edge_linetype
+\item edge_alpha
+\item filter
+}
+
+\code{geom_edge_diagonal2} understand the following aesthetics. Bold aesthetics are
+automatically set, but can be overridden.
+\itemize{
+\item \strong{x}
+\item \strong{y}
+\item \strong{group}
+\item \strong{circular}
+\item edge_colour
+\item edge_width
+\item edge_linetype
+\item edge_alpha
+\item filter
+}
+
+\code{geom_edge_diagonal} and \code{geom_edge_diagonal2} furthermore takes the following
+aesthetics.
+\itemize{
+\item start_cap
+\item end_cap
+\item label
+\item label_pos
+\item label_size
+\item angle
+\item hjust
+\item vjust
+\item family
+\item fontface
+\item lineheight
+}
+}
+
+\section{Computed variables}{
+
+
+\describe{
+\item{index}{The position along the path (not computed for the *0 version)}
+}
+}
+
+\section{Edge variants}{
+
 Many geom_edge_* layers comes in 3 flavors depending on the level of control
 needed over the drawing. The default (no numeric postfix) generate a number
 of points (\code{n}) along the edge and draws it as a path. Each point along
 the line has a numeric value associated with it giving the position along the
 path, and it is therefore possible to show the direction of the edge by
-mapping to this e.g. \code{colour = ..index..}. The version postfixed with a
-"2" uses the "long" edge format (see \code{\link{get_edges}}) and makes it
+mapping to this e.g. \code{colour = stat(index)}. The version postfixed with a
+"2" uses the "long" edge format (see \code{\link[=get_edges]{get_edges()}}) and makes it
 possible to interpolate node parameter between the start and end node along
 the edge. It is considerable less performant so should only be used if this
 is needed. The version postfixed with a "0" draws the edge in the most
@@ -111,9 +174,9 @@ package, but does not allow for gradients along the edge.
 
 Often it is beneficial to stop the drawing of the edge before it reaches the
 node, for instance in cases where an arrow should be drawn and the arrowhead
-shouldn't lay ontop or below the node point. geom_edge_* and geom_edge_*2
+shouldn't lay on top or below the node point. geom_edge_* and geom_edge_*2
 supports this through the start_cap and end_cap aesthetics that takes a
-\code{\link{geometry}} specification and dynamically caps the termini of the
+\code{\link[=geometry]{geometry()}} specification and dynamically caps the termini of the
 edges based on the given specifications. This means that if
 \code{end_cap = circle(1, 'cm')} the edges will end at a distance of 1cm even
 during resizing of the plot window.
@@ -130,90 +193,44 @@ this cannot be calculated beforehand. Using the angle_calc argument allows
 you to specify whether to use the supplied angle aesthetic or whether to draw
 the label along or across the edge.
 }
-\note{
+
+\section{Edge aesthetic name expansion}{
+
 In order to avoid excessive typing edge aesthetic names are
 automatically expanded. Because of this it is not necessary to write
 \code{edge_colour} within the \code{aes()} call as \code{colour} will
 automatically be renamed appropriately.
 }
-\section{Aesthetics}{
-
-geom_edge_diagonal and geom_edge_diagonal0 understand the following
-aesthetics. Bold aesthetics are automatically set, but can be overridden.
-\itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{\strong{xend}}
- \item{\strong{yend}}
- \item{\strong{circular}}
- \item{edge_colour}
- \item{edge_width}
- \item{edge_linetype}
- \item{edge_alpha}
- \item{filter}
-}
-geom_edge_diagonal2 understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
-\itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{\strong{group}}
- \item{\strong{circular}}
- \item{edge_colour}
- \item{edge_width}
- \item{edge_linetype}
- \item{edge_alpha}
- \item{filter}
-}
-geom_edge_diagonal and geom_edge_diagonal2 furthermore takes the following
-aesthetics.
-\itemize{
-  \item{start_cap}
-  \item{end_cap}
-  \item{label}
-  \item{label_pos}
-  \item{label_size}
-  \item{angle}
-  \item{hjust}
-  \item{vjust}
-  \item{family}
-  \item{fontface}
-  \item{lineheight}
-}
-}
-
-\section{Computed variables}{
-
-
-\describe{
- \item{index}{The position along the path (not computed for the *0 version)}
-}
-}
 
 \examples{
-require(igraph)
-gr <- make_tree(20, 4, 'out')
-E(gr)$class <- sample(letters[1:3], gsize(gr), replace = TRUE)
-V(gr)$class <- sample(letters[1:3], gorder(gr), replace = TRUE)
+require(tidygraph)
+gr <- create_tree(20, 4) \%>\%
+  mutate(class = sample(letters[1:3], n(), replace = TRUE)) \%>\%
+  activate(edges) \%>\%
+  mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
-ggraph(gr, 'igraph', algorithm = 'tree') +
-  geom_edge_diagonal(aes(alpha = ..index..))
+ggraph(gr, 'tree') +
+  geom_edge_diagonal(aes(alpha = stat(index)))
 
-ggraph(gr, 'igraph', algorithm = 'tree') +
+ggraph(gr, 'tree') +
   geom_edge_diagonal2(aes(colour = node.class))
 
-ggraph(gr, 'igraph', algorithm = 'tree') +
+ggraph(gr, 'tree') +
   geom_edge_diagonal0(aes(colour = class))
-
 }
 \seealso{
 Other geom_edge_*: \code{\link{geom_edge_arc}},
+  \code{\link{geom_edge_bend}},
   \code{\link{geom_edge_density}},
   \code{\link{geom_edge_elbow}},
   \code{\link{geom_edge_fan}},
   \code{\link{geom_edge_hive}},
   \code{\link{geom_edge_link}},
-  \code{\link{geom_edge_loop}}
+  \code{\link{geom_edge_loop}},
+  \code{\link{geom_edge_parallel}},
+  \code{\link{geom_edge_point}},
+  \code{\link{geom_edge_span}},
+  \code{\link{geom_edge_tile}}
 }
 \author{
 Thomas Lin Pedersen

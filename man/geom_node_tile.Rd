@@ -2,16 +2,14 @@
 % Please edit documentation in R/geom_node_tile.R
 \name{geom_node_tile}
 \alias{geom_node_tile}
-\alias{geom_node_treemap}
-\alias{geom_treemap}
 \title{Draw the rectangles in a treemap}
 \usage{
 geom_node_tile(mapping = NULL, data = NULL, position = "identity",
   show.legend = NA, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
-or \code{\link[ggplot2]{aes_}}. By default x, y, width and height are mapped to
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}
+or \code{\link[ggplot2:aes_]{ggplot2::aes_()}}. By default x, y, width and height are mapped to
 x, y, width and height in the node data.}
 
 \item{data}{The data to be displayed in this layer. There are three
@@ -25,8 +23,9 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -39,7 +38,7 @@ display.}
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 }
 \description{
@@ -51,50 +50,48 @@ treemap drawing
 }
 \section{Aesthetics}{
 
-geom_treemap understand the following aesthetics. Bold aesthetics are
+\code{geom_treemap} understand the following aesthetics. Bold aesthetics are
 automatically set, but can be overridden.
 \itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{\strong{width}}
- \item{\strong{height}}
- \item{alpha}
- \item{colour}
- \item{fill}
- \item{size}
- \item{stroke}
- \item{filter}
+\item \strong{x}
+\item \strong{y}
+\item \strong{width}
+\item \strong{height}
+\item alpha
+\item colour
+\item fill
+\item size
+\item stroke
+\item filter
 }
 }
 
 \examples{
-require(igraph)
-gr <- graph_from_data_frame(flare$edges, vertices = flare$vertices)
+# Create a graph of the flare class system
+library(tidygraph)
+flareGraph <- tbl_graph(flare$vertices, flare$edges) \%>\%
+  mutate(
+    class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
+      if (dist <= 1) {
+        return(shortName[node])
+      }
+      path$result[[nrow(path)]]
+    })
+  )
 
-ggraph(gr, 'treemap', weight = 'size') + geom_node_tile()
-
-# We can color by modifying the graph
-gr <- tree_apply(gr, function(node, parent, depth, tree) {
-  if (depth == 1) {
-    tree <- set_vertex_attr(tree, 'Class', node, V(tree)$shortName[node])
-  } else if (depth > 1) {
-    tree <- set_vertex_attr(tree, 'Class', node, V(tree)$Class[parent])
-  }
-  tree
-})
-
-ggraph(gr, 'treemap', weight = 'size') +
-  geom_node_tile(aes(fill = Class, filter = leaf, alpha = depth), colour = NA) +
+ggraph(flareGraph, 'treemap', weight = size) +
+  geom_node_tile(aes(fill = class, filter = leaf, alpha = depth), colour = NA) +
   geom_node_tile(aes(size = depth), colour = 'white') +
   scale_alpha(range = c(1, 0.5), guide = 'none') +
   scale_size(range = c(4, 0.2), guide = 'none')
-
 }
 \seealso{
 Other geom_node_*: \code{\link{geom_node_arc_bar}},
   \code{\link{geom_node_circle}},
   \code{\link{geom_node_point}},
-  \code{\link{geom_node_text}}
+  \code{\link{geom_node_range}},
+  \code{\link{geom_node_text}},
+  \code{\link{geom_node_voronoi}}
 }
 \author{
 Thomas Lin Pedersen

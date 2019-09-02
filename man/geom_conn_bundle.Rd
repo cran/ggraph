@@ -4,26 +4,27 @@
 \alias{geom_conn_bundle}
 \alias{geom_conn_bundle2}
 \alias{geom_conn_bundle0}
-\title{Create heirarchical edge bundles between node connections}
+\title{Create hierarchical edge bundles between node connections}
 \usage{
-geom_conn_bundle(mapping = NULL, data = get_con(), position = "identity",
-  arrow = NULL, lineend = "butt", show.legend = NA, n = 100,
-  tension = 0.8, ...)
+geom_conn_bundle(mapping = NULL, data = get_con(),
+  position = "identity", arrow = NULL, lineend = "butt",
+  show.legend = NA, n = 100, tension = 0.8, ...)
 
-geom_conn_bundle2(mapping = NULL, data = get_con(), position = "identity",
-  arrow = NULL, lineend = "butt", show.legend = NA, n = 100,
-  tension = 0.8, ...)
+geom_conn_bundle2(mapping = NULL, data = get_con(),
+  position = "identity", arrow = NULL, lineend = "butt",
+  show.legend = NA, n = 100, tension = 0.8, ...)
 
-geom_conn_bundle0(mapping = NULL, data = get_con(), position = "identity",
-  arrow = NULL, lineend = "butt", show.legend = NA, tension = 0.8, ...)
+geom_conn_bundle0(mapping = NULL, data = get_con(),
+  position = "identity", arrow = NULL, lineend = "butt",
+  show.legend = NA, tension = 0.8, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
-or \code{\link[ggplot2]{aes_}}. By default x, y, xend, yend, group and
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}
+or \code{\link[ggplot2:aes_]{ggplot2::aes_()}}. By default x, y, xend, yend, group and
 circular are mapped to x, y, xend, yend, edge.id and circular in the edge
 data.}
 
-\item{data}{The result of a call to \code{\link{get_con}}}
+\item{data}{The result of a call to \code{\link[=get_con]{get_con()}}}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -46,7 +47,7 @@ Defaults to 0.8}
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 }
 \description{
@@ -57,7 +58,7 @@ an intrinsic hierarchical structure that defines the layout but is not shown.
 Connections between points (that is, not edges) are then drawn so that they
 loosely follows the underlying hierarchical structure. This results in a
 flow-like structure where lines that partly move in the same direction will
-be bundled togeether.
+be bundled together.
 }
 \note{
 In order to avoid excessive typing edge aesthetic names are
@@ -70,15 +71,15 @@ automatically be renamed appropriately.
 geom_conn_bundle* understands the following aesthetics. Bold aesthetics are
 automatically set, but can be overridden.
 \itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{\strong{group}}
- \item{\strong{circular}}
- \item{edge_colour}
- \item{edge_width}
- \item{edge_linetype}
- \item{edge_alpha}
- \item{filter}
+\item{\strong{x}}
+\item{\strong{y}}
+\item{\strong{group}}
+\item{\strong{circular}}
+\item{edge_colour}
+\item{edge_width}
+\item{edge_linetype}
+\item{edge_alpha}
+\item{filter}
 }
 }
 
@@ -86,42 +87,41 @@ automatically set, but can be overridden.
 
 
 \describe{
- \item{index}{The position along the path (not computed for the *0 version)}
+\item{index}{The position along the path (not computed for the *0 version)}
 }
 }
 
 \examples{
 # Create a graph of the flare class system
-library(igraph)
-flareGraph <- graph_from_data_frame(flare$edges, vertices = flare$vertices)
+library(tidygraph)
+flareGraph <- tbl_graph(flare$vertices, flare$edges) \%>\%
+  mutate(
+    class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
+      if (dist <= 1) {
+        return(shortName[node])
+      }
+      path$result[[nrow(path)]]
+    })
+  )
 importFrom <- match(flare$imports$from, flare$vertices$name)
 importTo <- match(flare$imports$to, flare$vertices$name)
-flareGraph <- tree_apply(flareGraph, function(node, parent, depth, tree) {
-    tree <- set_vertex_attr(tree, 'depth', node, depth)
-    if (depth == 1) {
-        tree <- set_vertex_attr(tree, 'class', node, V(tree)$shortName[node])
-    } else if (depth > 1) {
-        tree <- set_vertex_attr(tree, 'class', node, V(tree)$class[parent])
-    }
-    tree
-})
-V(flareGraph)$leaf <- degree(flareGraph, mode = 'out') == 0
 
 # Use class inheritance for layout but plot class imports as bundles
 ggraph(flareGraph, 'dendrogram', circular = TRUE) +
-    geom_conn_bundle(aes(colour = ..index..), data = get_con(importFrom, importTo),
-                     edge_alpha = 0.25) +
-    geom_node_point(aes(filter = leaf, colour = class)) +
-    scale_edge_colour_distiller('', direction = 1, guide = 'edge_direction') +
-    coord_fixed() +
-    ggforce::theme_no_axes()
-
+  geom_conn_bundle(aes(colour = stat(index)),
+    data = get_con(importFrom, importTo),
+    edge_alpha = 0.25
+  ) +
+  geom_node_point(aes(filter = leaf, colour = class)) +
+  scale_edge_colour_distiller('', direction = 1, guide = 'edge_direction') +
+  coord_fixed() +
+  ggforce::theme_no_axes()
 }
 \references{
 Holten, D. (2006). \emph{Hierarchical edge bundles: visualization
 of adjacency relations in hierarchical data.} IEEE Transactions on
 Visualization and Computer Graphics, \strong{12}(5), 741-748.
-http://doi.org/10.1109/TVCG.2006.147
+\url{http://doi.org/10.1109/TVCG.2006.147}
 }
 \author{
 Thomas Lin Pedersen

@@ -8,8 +8,8 @@ geom_node_point(mapping = NULL, data = NULL, position = "identity",
   show.legend = NA, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
-or \code{\link[ggplot2]{aes_}}. By default x and y are mapped to x and y in
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}
+or \code{\link[ggplot2:aes_]{ggplot2::aes_()}}. By default x and y are mapped to x and y in
 the node data.}
 
 \item{data}{The data to be displayed in this layer. There are three
@@ -23,8 +23,9 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -37,43 +38,44 @@ display.}
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 }
 \description{
-This geom is equivalent in functionality to \code{\link[ggplot2]{geom_point}}
+This geom is equivalent in functionality to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}
 and allows for simple plotting of nodes in different shapes, colours and sizes.
 }
 \section{Aesthetics}{
 
-geom_node_point understand the following aesthetics. Bold aesthetics are
+\code{geom_node_point} understand the following aesthetics. Bold aesthetics are
 automatically set, but can be overridden.
 \itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{alpha}
- \item{colour}
- \item{fill}
- \item{shape}
- \item{size}
- \item{stroke}
- \item{filter}
+\item \strong{x}
+\item \strong{y}
+\item alpha
+\item colour
+\item fill
+\item shape
+\item size
+\item stroke
+\item filter
 }
 }
 
 \examples{
-require(igraph)
-gr <- make_graph('bull')
-V(gr)$class <- sample(letters[1:3], gorder(gr), replace = TRUE)
+require(tidygraph)
+gr <- create_notable('bull') \%>\%
+  mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
-ggraph(gr, 'igraph', algorithm = 'nicely') + geom_node_point()
-
+ggraph(gr, 'stress') + geom_node_point()
 }
 \seealso{
 Other geom_node_*: \code{\link{geom_node_arc_bar}},
   \code{\link{geom_node_circle}},
+  \code{\link{geom_node_range}},
   \code{\link{geom_node_text}},
-  \code{\link{geom_node_tile}}
+  \code{\link{geom_node_tile}},
+  \code{\link{geom_node_voronoi}}
 }
 \author{
 Thomas Lin Pedersen

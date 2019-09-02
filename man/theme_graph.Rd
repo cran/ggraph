@@ -3,6 +3,7 @@
 \name{theme_graph}
 \alias{theme_graph}
 \alias{th_foreground}
+\alias{th_no_axes}
 \alias{set_graph_style}
 \alias{unset_graph_style}
 \title{A theme tuned for graph visualizations}
@@ -18,10 +19,13 @@ theme_graph(base_family = "Arial Narrow", base_size = 11,
   strip_text_size = 10, strip_text_face = "bold",
   strip_text_colour = fg_text_colour, caption_family = base_family,
   caption_size = 9, caption_face = "italic", caption_margin = 10,
-  caption_colour = bg_text_colour, plot_margin = margin(30, 30, 30, 30))
+  caption_colour = bg_text_colour, plot_margin = margin(30, 30, 30,
+  30))
 
 th_foreground(foreground = "grey80", fg_text_colour = NULL,
   border = FALSE)
+
+th_no_axes()
 
 set_graph_style(family = "Arial Narrow", face = "plain", size = 11,
   text_size = 11, text_colour = "black", ...)
@@ -70,12 +74,12 @@ added benefit of this is that it also changes the default text-related values
 in the different geoms for a completely coherent look.
 \code{unset_graph_style} can be used to revert the defaults back to their
 default settings (that is, they are not necessarily reverted back to what
-they were prior to calling \code{set_graph_style}).
+they were prior to calling \code{set_graph_style}). The \code{th_no_axes()} helper is
+provided to modify an existing theme so that grid and axes are removed.
 }
 \examples{
-library(igraph)
-graph <- graph_from_data_frame(highschool)
+library(tidygraph)
+graph <- as_tbl_graph(highschool)
 
 ggraph(graph) + geom_edge_link() + geom_node_point() + theme_graph()
-
 }

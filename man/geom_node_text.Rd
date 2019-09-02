@@ -10,13 +10,13 @@ geom_node_text(mapping = NULL, data = NULL, position = "identity",
   show.legend = NA, repel = FALSE, ...)
 
 geom_node_label(mapping = NULL, data = NULL, position = "identity",
-  parse = FALSE, nudge_x = 0, nudge_y = 0, label.padding = unit(0.25,
-  "lines"), label.r = unit(0.15, "lines"), label.size = 0.25,
-  show.legend = NA, repel = FALSE, ...)
+  parse = FALSE, nudge_x = 0, nudge_y = 0,
+  label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
+  label.size = 0.25, show.legend = NA, repel = FALSE, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
-or \code{\link[ggplot2]{aes_}}. By default x and y are mapped to x and y in
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}
+or \code{\link[ggplot2:aes_]{ggplot2::aes_()}}. By default x and y are mapped to x and y in
 the node data.}
 
 \item{data}{The data to be displayed in this layer. There are three
@@ -30,14 +30,15 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
-displayed as described in ?plotmath}
+displayed as described in \code{?plotmath}.}
 
 \item{nudge_x, nudge_y}{Horizontal and vertical adjustment to nudge labels by.
 Useful for offsetting text from points, particularly on discrete scales.}
@@ -57,7 +58,7 @@ ggrepel package.}
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
 \item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
@@ -67,45 +68,48 @@ to the paired geom/stat.}
 \item{label.size}{Size of label border, in mm.}
 }
 \description{
-These geoms are equivalent in functionality to geom_text and geom_label and
-allows for simple annotation of nodes.
+These geoms are equivalent in functionality to \code{\link[ggplot2:geom_text]{ggplot2::geom_text()}} and
+\code{\link[ggplot2:geom_label]{ggplot2::geom_label()}} and allows for simple annotation of nodes.
 }
 \section{Aesthetics}{
 
-geom_node_point understand the following aesthetics. Bold aesthetics are
+\code{geom_node_text} understands the following aesthetics. Bold aesthetics are
 automatically set, but can be overridden. Italic aesthetics are required but
 not set by default
 \itemize{
- \item{\strong{x}}
- \item{\strong{y}}
- \item{\emph{label}}
- \item{alpha}
- \item{angle}
- \item{colour}
- \item{family}
- \item{fontface}
- \item{hjust}
- \item{lineheight}
- \item{size}
- \item{vjust}
+\item \strong{x}
+\item \strong{y}
+\item \emph{label}
+\item alpha
+\item angle
+\item colour
+\item family
+\item fontface
+\item hjust
+\item lineheight
+\item size
+\item vjust
 }
 }
 
 \examples{
-require(igraph)
-gr <- make_graph('bull')
-V(gr)$class <- sample(letters[1:3], gorder(gr), replace = TRUE)
+require(tidygraph)
+gr <- create_notable('bull') \%>\%
+  mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
-ggraph(gr, 'igraph', algorithm = 'nicely') + geom_node_point(aes(label = class))
+ggraph(gr, 'stress') +
+  geom_node_point(aes(label = class))
 
-ggraph(gr, 'igraph', algorithm = 'nicely') + geom_node_label(aes(label = class))
-
+ggraph(gr, 'stress') +
+  geom_node_label(aes(label = class), repel = TRUE)
 }
 \seealso{
 Other geom_node_*: \code{\link{geom_node_arc_bar}},
   \code{\link{geom_node_circle}},
   \code{\link{geom_node_point}},
-  \code{\link{geom_node_tile}}
+  \code{\link{geom_node_range}},
+  \code{\link{geom_node_tile}},
+  \code{\link{geom_node_voronoi}}
 }
 \author{
 Thomas Lin Pedersen

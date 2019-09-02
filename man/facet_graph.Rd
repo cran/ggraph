@@ -4,12 +4,13 @@
 \alias{facet_graph}
 \title{Create a grid of small multiples by node and/or edge attributes}
 \usage{
-facet_graph(facets, row_type = "edge", col_type = "node", margins = FALSE,
-  scales = "fixed", space = "fixed", shrink = TRUE,
-  labeller = "label_value", as.table = TRUE, switch = NULL, drop = TRUE)
+facet_graph(facets, row_type = "edge", col_type = "node",
+  margins = FALSE, scales = "fixed", space = "fixed",
+  shrink = TRUE, labeller = "label_value", as.table = TRUE,
+  switch = NULL, drop = TRUE)
 }
 \arguments{
-\item{facets}{This argument is soft-deprecated, please us \code{rows}
+\item{facets}{This argument is soft-deprecated, please use \code{rows}
 and \code{cols} instead.}
 
 \item{row_type, col_type}{Either \code{'node'} or \code{'edge'}. Which data
@@ -63,27 +64,28 @@ data will automatically be dropped. If \code{FALSE}, all factor levels
 will be shown, regardless of whether or not they appear in the data.}
 }
 \description{
-This function is equivalent to \code{\link[ggplot2]{facet_grid}} in that it
+This function is equivalent to \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}} in that it
 allows for building a grid of small multiples where rows and columns
-correspond to a specific data value. While \code{\link[ggplot2]{facet_grid}}
+correspond to a specific data value. While \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 could be used it would lead to unexpected results as it is not possible to
-specify whether you are refering to a node or an edge attribute. Furthermore
-\code{\link[ggplot2]{facet_grid}} will draw edges in panels even though the
+specify whether you are referring to a node or an edge attribute. Furthermore
+\code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}} will draw edges in panels even though the
 panel does not contain both terminal nodes. \code{facet_graph} takes care of
 all of these issues, allowing you to define which data type the rows and
 columns are referencing as well as filtering the edges based on the nodes in
 each panel (even when nodes are not drawn).
 }
 \examples{
-library(igraph)
-gr <- graph_from_data_frame(highschool)
-V(gr)$popularity <- as.character(cut(degree(gr, mode = 'in'), breaks = 3,
-                                     labels = c('low', 'medium', 'high')))
+library(tidygraph)
+gr <- as_tbl_graph(highschool) \%>\%
+  mutate(popularity = as.character(cut(centrality_degree(mode = 'in'),
+    breaks = 3,
+    labels = c('low', 'medium', 'high')
+  )))
 ggraph(gr) +
-    geom_edge_link() +
-    geom_node_point() +
-    facet_graph(year~popularity)
-
+  geom_edge_link() +
+  geom_node_point() +
+  facet_graph(year ~ popularity)
 }
 \seealso{
 Other ggraph-facets: \code{\link{facet_edges}},

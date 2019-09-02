@@ -10,8 +10,8 @@
 \alias{is.geometry}
 \title{Define simple shapes for line capping}
 \usage{
-geometry(type = "circle", width = 1, height = width, width_unit = "cm",
-  height_unit = width_unit)
+geometry(type = "circle", width = 1, height = width,
+  width_unit = "cm", height_unit = width_unit)
 
 circle(radius = 1, unit = "cm")
 
@@ -38,9 +38,9 @@ given.}
 \item{label}{The text to be enclosed}
 
 \item{padding}{extra size to be added around the text using the
-\code{\link[ggplot2]{margin}} function}
+\code{\link[ggplot2:margin]{ggplot2::margin()}} function}
 
-\item{...}{Passed on to \code{\link[grid]{gpar}}}
+\item{...}{Passed on to \code{\link[grid:gpar]{grid::gpar()}}}
 
 \item{x}{An object to test for geometry inheritance}
 }
@@ -72,5 +72,4 @@ geometry(c('circle', 'rect', 'rect'), 1:3, 3:1)
 circle(1:4, 'mm')
 
 label_rect(c('some', 'different', 'words'), fontsize = 18)
-
 }

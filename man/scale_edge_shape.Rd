@@ -21,6 +21,9 @@ scale_edge_shape_identity(..., guide = "none")
 \arguments{
 \item{...}{Arguments passed on to \code{discrete_scale}
 \describe{
+  \item{palette}{A palette function that when called with a single integer
+argument (the number of levels in the scale) returns the values that
+they should take.}
   \item{breaks}{One of:
 \itemize{
 \item \code{NULL} for no breaks
@@ -43,10 +46,7 @@ value should missing be displayed as? Does not apply to position scales
 where \code{NA} is always placed at the far right.}
   \item{aesthetics}{The names of the aesthetics that this scale works with}
   \item{scale_name}{The name of the scale}
-  \item{palette}{A palette function that when called with a single integer
-argument (the number of levels in the scale) returns the values that
-they should take}
-  \item{name}{The name of the scale. Used as axis or legend title. If
+  \item{name}{The name of the scale. Used as the axis or legend title. If
 \code{waiver()}, the default, the name of the scale is taken from the first
 mapping used for that aesthetic. If \code{NULL}, the legend title will be
 omitted.}
@@ -80,7 +80,7 @@ A ggproto object inheriting from \code{Scale}
 }
 \description{
 This set of scales defines new shape scales for edge geoms equivalent to the
-ones already defined by ggplot2. See \code{\link[ggplot2]{scale_shape}} for
+ones already defined by ggplot2. See \code{\link[ggplot2:scale_shape]{ggplot2::scale_shape()}} for
 more information. The different geoms will know whether to use edge scales or
 the standard scales so it is not necessary to write \code{edge_shape} in
 the call to the geom - just use \code{shape}.

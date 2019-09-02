@@ -14,10 +14,8 @@ and defining faceting groups on the rows or columns dimension.
 The variables can be named (the names are passed to \code{labeller}).
 
 For compatibility with the classic interface, can also be a
-formula or character vector. Use either a one sided formula, `~a
-\itemize{
-\item b\code{, or a character vector,}c("a", "b")`.
-}}
+formula or character vector. Use either a one sided formula, \code{~a + b},
+or a character vector, \code{c("a", "b")}.}
 
 \item{nrow}{Number of rows and columns.}
 
@@ -64,20 +62,21 @@ either of the four sides by setting \code{strip.position = c("top",
   "bottom", "left", "right")}}
 }
 \description{
-This function is equivalent to \code{\link[ggplot2]{facet_wrap}} but only
+This function is equivalent to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} but only
 facets nodes. Edges are drawn if their terminal nodes are both present in a
 panel.
 }
 \examples{
-library(igraph)
-gr <- graph_from_data_frame(highschool)
-V(gr)$popularity <- as.character(cut(degree(gr, mode = 'in'), breaks = 3,
-                                     labels = c('low', 'medium', 'high')))
+library(tidygraph)
+gr <- as_tbl_graph(highschool) \%>\%
+  mutate(popularity = as.character(cut(centrality_degree(mode = 'in'),
+    breaks = 3,
+    labels = c('low', 'medium', 'high')
+  )))
 ggraph(gr) +
-    geom_edge_link() +
-    geom_node_point() +
-    facet_nodes(~popularity)
-
+  geom_edge_link() +
+  geom_node_point() +
+  facet_nodes(~popularity)
 }
 \seealso{
 Other ggraph-facets: \code{\link{facet_edges}},
