@@ -4,8 +4,14 @@
 \alias{get_con}
 \title{Create a connection extractor function}
 \usage{
-get_con(from = integer(), to = integer(), paths = NULL, ...,
-  weight = NULL, mode = "all")
+get_con(
+  from = integer(),
+  to = integer(),
+  paths = NULL,
+  ...,
+  weight = NULL,
+  mode = "all"
+)
 }
 \arguments{
 \item{from, to}{The index of the start and end nodes for the connections}
@@ -16,7 +22,7 @@ connections}
 \item{...}{Additional information to be added to the final data output}
 
 \item{weight}{An expression to be evaluated on the edge data to provide
-weigths for the shortest path calculations}
+weights for the shortest path calculations}
 
 \item{mode}{Character constant, gives whether the shortest paths to or from
 the given vertices should be calculated for directed graphs. If \code{out}
@@ -33,7 +39,7 @@ connections
 Connections within the ggraph terminology are links between nodes that are
 not part of the network structure itself. In that sense connections do not
 affect the layout calculation in any way and will not be drawn by the
-standard \code{geom_edge_*} functions. A connection does not need to only be
+standard \verb{geom_edge_*} functions. A connection does not need to only be
 defined by a start and end node, but can include intermediary nodes.
 \code{get_con} helps in creating connection data by letting you specify start
 and end nodes and automatically finds the shortest path within the graph
@@ -42,7 +48,8 @@ also possible to supply a list of vectors giving node indices that define a
 connection.
 }
 \seealso{
-Other extractors: \code{\link{get_edges}},
-  \code{\link{get_nodes}}
+Other extractors: 
+\code{\link{get_edges}()},
+\code{\link{get_nodes}()}
 }
 \concept{extractors}

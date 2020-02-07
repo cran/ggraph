@@ -1,3 +1,11 @@
+# ggraph 2.0.1
+
+* Fix bug in ggraph that will surface with the next grid release
+* Deprecate `qgraph()` in favour of `autograph()` to avoid name collision with
+  `qgraph::qgraph()`. `autograph()` is now also a generic with a default method,
+  so you can provide your own specific ggraph plot method for your network 
+  classes
+
 # ggraph 2.0.0
 
 This release is a major release including many new features, bug fixes and some
@@ -61,7 +69,7 @@ breaking changes.
   
 ## Bug fixes
 
-* Fixed numerious bugs and issues pertaining to the group aesthetic handling in
+* Fixed numerous bugs and issues pertaining to the group aesthetic handling in
   many edge geoms (#190, #193).
 * Edge geoms no longer throws an error when all edges are completely capped 
   (#176)
