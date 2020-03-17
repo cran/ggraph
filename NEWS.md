@@ -1,3 +1,7 @@
+# ggraph 2.0.2
+
+* Remove reshape2 dependency
+
 # ggraph 2.0.1
 
 * Fix bug in ggraph that will surface with the next grid release

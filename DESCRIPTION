@@ -1,7 +1,7 @@
 Package: ggraph
 Type: Package
 Title: An Implementation of Grammar of Graphics for Graphs and Networks
-Version: 2.0.1
+Version: 2.0.2
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
@@ -31,9 +31,9 @@ URL: https://ggraph.data-imaginist.com,
         https://github.com/thomasp85/ggraph
 BugReports: https://github.com/thomasp85/ggraph/issues
 NeedsCompilation: yes
-Packaged: 2020-02-07 10:43:31 UTC; thomas
+Packaged: 2020-03-17 21:10:48 UTC; thomas
 Author: Thomas Lin Pedersen [cre, aut]
     (<https://orcid.org/0000-0002-5147-4711>),
   RStudio [cph]
 Repository: CRAN
-Date/Publication: 2020-02-07 12:10:18 UTC
+Date/Publication: 2020-03-17 22:00:03 UTC
