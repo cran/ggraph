@@ -121,7 +121,10 @@ ggraph(dendrogram, 'dendrogram', circular = TRUE) +
   coord_fixed()
 
 ## -----------------------------------------------------------------------------
-ggraph(dendrogram, 'unrooted') + 
+tree <- create_tree(100, 2, directed = FALSE) %>% 
+  activate(edges) %>% 
+  mutate(length = runif(n()))
+ggraph(tree, 'unrooted', length = length) + 
   geom_edge_link()
 
 ## -----------------------------------------------------------------------------
