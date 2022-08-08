@@ -1,3 +1,7 @@
+# ggraph 2.0.6
+
+* Fix vignette errors on CRAN
+
 # ggraph 2.0.5
 
 * Fix deprecation of std::random_shuffle in C++14 by specifyin C++11 as the

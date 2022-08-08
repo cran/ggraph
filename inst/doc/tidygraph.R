@@ -1,6 +1,7 @@
 ## ---- include=FALSE-----------------------------------------------------------
 library(ggraph)
 set_graph_style(family = 'Arial', size = 7, foreground = 'lightgrey', plot_margin = margin(0, 0, 0, 0))
+set.seed(2022)
 
 ## ---- message=FALSE-----------------------------------------------------------
 library(tidygraph)
@@ -25,7 +26,7 @@ ggraph(graph, layout = 'fr', weights = weight) +
   geom_node_point()
 
 ## -----------------------------------------------------------------------------
-ggraph(graph, layout = 'fr', weights = log(weight)) + 
+ggraph(graph, layout = 'fr', weights = exp(weight)) + 
   geom_edge_link() + 
   geom_node_point()
 
