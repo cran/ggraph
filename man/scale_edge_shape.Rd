@@ -4,6 +4,7 @@
 \alias{scale_edge_shape}
 \alias{scale_edge_shape_discrete}
 \alias{scale_edge_shape_continuous}
+\alias{scale_edge_shape_binned}
 \alias{scale_edge_shape_manual}
 \alias{scale_edge_shape_identity}
 \title{Edge shape scales}
@@ -14,7 +15,9 @@ scale_edge_shape_discrete(..., solid = TRUE)
 
 scale_edge_shape_continuous(...)
 
-scale_edge_shape_manual(..., values)
+scale_edge_shape_binned(..., solid = TRUE)
+
+scale_edge_shape_manual(..., values, breaks = waiver(), na.value = NA)
 
 scale_edge_shape_identity(..., guide = "none")
 }
@@ -65,6 +68,7 @@ omitted.}
 \item \code{waiver()} for the default labels computed by the
 transformation object
 \item A character vector giving labels (must be same length as \code{breaks})
+\item An expression vector (must be the same length as breaks). See ?plotmath for details.
 \item A function that takes the breaks as input and returns labels
 as output. Also accepts rlang \link[rlang:as_function]{lambda} function
 notation.
@@ -82,6 +86,17 @@ will be matched in order (usually alphabetical) with the limits of the
 scale, or with \code{breaks} if provided. If this is a named vector, then the
 values will be matched based on the names instead. Data values that don't
 match will be given \code{na.value}.}
+
+\item{breaks}{One of:
+\itemize{
+\item \code{NULL} for no breaks
+\item \code{waiver()} for the default breaks (the scale limits)
+\item A character vector of breaks
+\item A function that takes the limits as input and returns breaks
+as output
+}}
+
+\item{na.value}{The aesthetic value to use for missing (\code{NA}) values}
 
 \item{guide}{Guide to use for this scale.}
 }

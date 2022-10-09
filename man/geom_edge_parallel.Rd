@@ -71,8 +71,10 @@ data.}
 giving edges in correct format (see details for for guidance on the format).
 See \code{\link[=get_edges]{get_edges()}} for more details on edge extraction.}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
 
 \item{arrow}{Arrow specification, as created by \code{\link[grid:arrow]{grid::arrow()}}.}
 
@@ -195,7 +197,7 @@ needed over the drawing. The default (no numeric postfix) generate a number
 of points (\code{n}) along the edge and draws it as a path. Each point along
 the line has a numeric value associated with it giving the position along the
 path, and it is therefore possible to show the direction of the edge by
-mapping to this e.g. \code{colour = stat(index)}. The version postfixed with a
+mapping to this e.g. \code{colour = after_stat(index)}. The version postfixed with a
 "2" uses the "long" edge format (see \code{\link[=get_edges]{get_edges()}}) and makes it
 possible to interpolate node parameter between the start and end node along
 the edge. It is considerable less performant so should only be used if this
@@ -242,7 +244,7 @@ gr <- create_notable('bull') \%>\%
   mutate(class = sample(c('x', 'y'), 5, TRUE))
 
 ggraph(gr, 'stress') +
-  geom_edge_parallel(aes(alpha = stat(index)))
+  geom_edge_parallel(aes(alpha = after_stat(index)))
 
 ggraph(gr, 'stress') +
   geom_edge_parallel2(aes(colour = node.class))

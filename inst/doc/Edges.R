@@ -108,7 +108,7 @@ ggraph(hairball, layout = 'matrix', sort.by = bfs_rank()) +
 
 ## -----------------------------------------------------------------------------
 ggraph(hairball, layout = 'linear') + 
-  geom_edge_arc(aes(colour = year, alpha = stat(index))) + 
+  geom_edge_arc(aes(colour = year, alpha = after_stat(index))) + 
   scale_edge_alpha('Edge direction', guide = 'edge_direction')
 
 ## -----------------------------------------------------------------------------
