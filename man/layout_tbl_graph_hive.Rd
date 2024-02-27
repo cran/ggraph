@@ -90,24 +90,28 @@ Krzywinski, M., Birol, I., Jones, SJM., and Marra, MA. (2012). \emph{Hive
 plots-rational approach to visualizing networks}. Brief Bioinform 13 (5):
 627-644. https://doi.org/10.1093/bib/bbr069
 
-\url{http://www.hiveplot.net}
+\url{https://www.hiveplot.net/}
 }
 \seealso{
 Other layout_tbl_graph_*: 
 \code{\link{layout_tbl_graph_auto}()},
 \code{\link{layout_tbl_graph_backbone}()},
+\code{\link{layout_tbl_graph_cactustree}()},
 \code{\link{layout_tbl_graph_centrality}()},
 \code{\link{layout_tbl_graph_circlepack}()},
 \code{\link{layout_tbl_graph_dendrogram}()},
 \code{\link{layout_tbl_graph_eigen}()},
 \code{\link{layout_tbl_graph_fabric}()},
 \code{\link{layout_tbl_graph_focus}()},
+\code{\link{layout_tbl_graph_htree}()},
 \code{\link{layout_tbl_graph_igraph}()},
 \code{\link{layout_tbl_graph_linear}()},
 \code{\link{layout_tbl_graph_manual}()},
 \code{\link{layout_tbl_graph_matrix}()},
+\code{\link{layout_tbl_graph_metro}()},
 \code{\link{layout_tbl_graph_partition}()},
 \code{\link{layout_tbl_graph_pmds}()},
+\code{\link{layout_tbl_graph_sf}()},
 \code{\link{layout_tbl_graph_stress}()},
 \code{\link{layout_tbl_graph_treemap}()},
 \code{\link{layout_tbl_graph_unrooted}()}

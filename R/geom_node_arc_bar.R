@@ -7,7 +7,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_node_point` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x0**
 #' - **y0**
@@ -49,7 +49,7 @@ geom_node_arc_bar <- function(mapping = NULL, data = NULL, position = 'identity'
   layer(
     data = data, mapping = mapping, stat = StatNodeArcBar, geom = GeomArcBar,
     position = position, show.legend = show.legend, inherit.aes = FALSE,
-    params = list(na.rm = FALSE, ...)
+    params = list2(...)
   )
 }
 

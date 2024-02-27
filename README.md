@@ -35,7 +35,7 @@ library(tidygraph)
 #>     filter
 
 # Create graph of highschool friendships
-graph <- as_tbl_graph(highschool) %>% 
+graph <- as_tbl_graph(highschool) |> 
     mutate(Popularity = centrality_degree(mode = 'in'))
 
 # plot using ggraph
@@ -102,7 +102,8 @@ though and the latest set of features can be obtained by installing from
 this repository using `devtools`
 
 ``` r
-devtools::install_github('thomasp85/ggraph')
+# install.packages("pak")
+pak::pak('thomasp85/ggraph')
 ```
 
 ## Related work
@@ -113,7 +114,7 @@ most ambitious.
 [`ggdendro`](https://CRAN.R-project.org/package=ggdendro) provides
 support for `dendrogram` and `hclust` objects through conversion of the
 structures into line segments that can then be plotted with
-`geom_segment()`. [`ggtree`](http://bioconductor.org/packages/ggtree/)
+`geom_segment()`. [`ggtree`](https://bioconductor.org/packages/ggtree/)
 provides more extensive support for all things tree-related, though it
 lacks some of the layouts and edge types that `ggraph` offers (it has
 other features that `ggraph` lacks though). For more standard *hairball*

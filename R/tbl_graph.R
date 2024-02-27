@@ -1,7 +1,7 @@
 #' @rdname ggraph
 #' @aliases layout_tbl_graph
 #'
-#' @importFrom igraph gorder
+#' @importFrom igraph gorder V<-
 #' @export
 #'
 create_layout.tbl_graph <- function(graph, layout, circular = FALSE, ...) {
@@ -13,18 +13,21 @@ create_layout.tbl_graph <- function(graph, layout, circular = FALSE, ...) {
   } else {
     layout <- layout_to_table(layout, graph, circular = circular, ...)
   }
+  layout <- as_tibble(layout)
   layout$.ggraph.index <- seq_len(nrow(layout))
-  if (is.null(attr(layout, 'graph'))) {
-    attr(layout, 'graph') <- graph
-  }
+  graph <- attr(layout, 'graph') %||% graph
+  V(graph)$.ggraph_layout_x <- layout$x
+  V(graph)$.ggraph_layout_y <- layout$y
+  attr(layout, 'graph') <- graph
   attr(layout, 'circular') <- circular
   class(layout) <- c(
     'layout_tbl_graph',
     'layout_ggraph',
-    'data.frame'
+    class(layout)
   )
   check_layout(layout)
 }
+#' @export
 collect_edges.layout_tbl_graph <- function(layout) {
   gr <- attr(layout, 'graph')
   edges <- as_tibble(gr, active = 'edges')
@@ -33,7 +36,8 @@ collect_edges.layout_tbl_graph <- function(layout) {
 }
 #' @importFrom igraph shortest_paths
 #' @importFrom rlang enquo eval_tidy
-collect_connections.layout_tbl_graph <- function(layout, from, to, weight = NULL, mode = 'all') {
+#' @export
+collect_connections.layout_tbl_graph <- function(layout, from, to, weight = NULL, mode = 'all', ...) {
   from <- match(from, layout$.ggraph.orig_index)
   to <- match(to, layout$.ggraph.orig_index)
   weight <- eval_tidy(enquo(weight), collect_edges(layout))
@@ -83,13 +87,20 @@ prepare_graph <- function(graph, layout, direction = 'out', ...) {
     'dendrogram',
     'treemap',
     'circlepack',
-    'partition'
+    'partition',
+    'cactustree',
+    'htree'
   )
-  if (is_hierarchy || (layout == 'auto' && with_graph(graph, graph_is_tree() || graph_is_forest()))) {
-    graph <- graph_to_tree(graph, mode = direction)
+  graph_is_treeish <- with_graph(graph, graph_is_tree() || graph_is_forest())
+  if (is_hierarchy || (layout == 'auto' && graph_is_treeish)) {
+    if (!graph_is_treeish) graph <- graph_to_tree(graph, mode = direction)
     graph <- permute(graph, match(seq_len(gorder(graph)), order(node_depth(graph, direction))))
   }
-  as_tbl_graph(graph)
+  if (inherits(graph, "sfnetwork")) {
+    graph
+  } else {
+    as_tbl_graph(graph)
+  }
 }
 #' @importFrom igraph degree unfold_tree components induced_subgraph vertex_attr vertex_attr<- is.directed simplify
 graph_to_tree <- function(graph, mode) {

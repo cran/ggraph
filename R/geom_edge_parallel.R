@@ -8,7 +8,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_edge_parallel` and `geom_edge_parallel0` understand the following
-#' aesthetics. Bold aesthetics are automatically set, but can be overridden.
+#' aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -23,7 +23,7 @@
 #' - filter
 #'
 #' `geom_edge_parallel2` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -68,8 +68,8 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' gr <- create_notable('bull') %>%
-#'   convert(to_directed) %>%
+#' gr <- create_notable('bull') |>
+#'   convert(to_directed) |>
 #'   bind_edges(data.frame(from = c(1, 2, 2, 3), to = c(2, 1, 3, 2))) %E>%
 #'   mutate(class = sample(letters[1:3], 9, TRUE)) %N>%
 #'   mutate(class = sample(c('x', 'y'), 5, TRUE))
@@ -135,9 +135,8 @@ geom_edge_parallel <- function(mapping = NULL, data = get_edges(),
         geom = GeomEdgeParallelPath, position = position, show.legend = show.legend,
         inherit.aes = FALSE,
         params = expand_edge_aes(
-          list(arrow = arrow, lineend = lineend, linejoin = linejoin,
-               linemitre = linemitre, na.rm = FALSE, sep = sep, n = n,
-               interpolate = FALSE,
+          list2(arrow = arrow, lineend = lineend, linejoin = linejoin,
+               linemitre = linemitre, sep = sep, n = n, interpolate = FALSE,
                label_colour = label_colour, label_alpha = label_alpha,
                label_parse = label_parse, check_overlap = check_overlap,
                angle_calc = angle_calc, force_flip = force_flip,
@@ -187,9 +186,8 @@ geom_edge_parallel2 <- function(mapping = NULL, data = get_edges('long'),
     geom = GeomEdgeParallelPath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(arrow = arrow, lineend = lineend, linejoin = linejoin,
-           linemitre = linemitre, na.rm = FALSE, sep = sep, n = n,
-           interpolate = TRUE,
+      list2(arrow = arrow, lineend = lineend, linejoin = linejoin,
+           linemitre = linemitre, sep = sep, n = n, interpolate = TRUE,
            label_colour = label_colour, label_alpha = label_alpha,
            label_parse = label_parse, check_overlap = check_overlap,
            angle_calc = angle_calc, force_flip = force_flip,
@@ -226,23 +224,22 @@ geom_edge_parallel0 <- function(mapping = NULL, data = get_edges(),
     geom = GeomEdgeParallelSegment, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE,
-        sep = sep, ...
+      list2(
+        arrow = arrow, lineend = lineend, sep = sep, ...
       )
     )
   )
 }
-#' @importFrom dplyr %>% group_by arrange summarise n ungroup pull
+#' @importFrom dplyr group_by arrange summarise n ungroup pull
 edge_positions <- function(from, to, params) {
   from$.id <- paste(pmin(from$from, to$to), pmax(from$from, to$to), sep = '-')
   from$.orig_ind <- seq_len(nrow(from))
-  from %>%
-    group_by(.data$PANEL, .data$.id) %>%
-    arrange(.data$from) %>%
-    mutate(position = seq_len(n()) - 0.5 - n() / 2) %>%
-    mutate(position = .data$position * ifelse(.data$from < .data$to, 1, -1)) %>%
-    ungroup() %>%
-    arrange(.data$.orig_ind) %>%
+  from |>
+    group_by(.data$PANEL, .data$.id) |>
+    arrange(.data$from) |>
+    mutate(position = seq_len(n()) - 0.5 - n() / 2) |>
+    mutate(position = .data$position * ifelse(.data$from < .data$to, 1, -1)) |>
+    ungroup() |>
+    arrange(.data$.orig_ind) |>
     pull(.data$position)
 }

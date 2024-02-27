@@ -1,7 +1,7 @@
-## ---- include=FALSE-----------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 set.seed(2022)
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ggraph)
 library(tidygraph)
 
@@ -58,8 +58,8 @@ ggraph(graph, 'partition', circular = TRUE) +
   geom_node_arc_bar(aes(fill = depth), size = 0.25) + 
   coord_fixed()
 
-## ---- fig.show='hold', results='hide'-----------------------------------------
-graph <- as_tbl_graph(highschool) %>% 
+## ----fig.show='hold', results='hide'------------------------------------------
+graph <- as_tbl_graph(highschool) |> 
   mutate(degree = centrality_degree())
 lapply(c('stress', 'fr', 'lgl', 'graphopt'), function(layout) {
   ggraph(graph, layout = layout) + 
@@ -69,7 +69,7 @@ lapply(c('stress', 'fr', 'lgl', 'graphopt'), function(layout) {
 })
 
 ## -----------------------------------------------------------------------------
-graph <- graph %>% 
+graph <- graph |> 
   mutate(friends = ifelse(
     centrality_degree(mode = 'in') < 5, 'few',
     ifelse(centrality_degree(mode = 'in') >= 15, 'many', 'medium')
@@ -110,6 +110,27 @@ ggraph(graph, 'treemap', weight = size) +
   geom_node_point(aes(colour = depth))
 
 ## -----------------------------------------------------------------------------
+ggraph(graph, 'cactustree') + 
+  geom_node_circle(aes(fill = depth), size = 0.25) + 
+  coord_fixed()
+
+## -----------------------------------------------------------------------------
+importFrom <- match(flare$imports$from, flare$vertices$name)
+importTo <- match(flare$imports$to, flare$vertices$name)
+
+ggraph(graph, 'cactustree') + 
+  geom_node_circle(aes(fill = depth), 
+    size = 0.25, 
+    alpha = 0.2
+  ) + 
+  geom_conn_bundle(aes(colour = after_stat(index)),
+    data = get_con(importFrom, importTo),
+    edge_alpha = 0.25
+  ) +
+  theme(legend.position = "none") +
+  coord_fixed()
+
+## -----------------------------------------------------------------------------
 ggraph(graph, 'tree') + 
   geom_edge_diagonal()
 
@@ -124,8 +145,8 @@ ggraph(dendrogram, 'dendrogram', circular = TRUE) +
   coord_fixed()
 
 ## -----------------------------------------------------------------------------
-tree <- create_tree(100, 2, directed = FALSE) %>% 
-  activate(edges) %>% 
+tree <- create_tree(100, 2, directed = FALSE) |> 
+  activate(edges) |> 
   mutate(length = runif(n()))
 ggraph(tree, 'unrooted', length = length) + 
   geom_edge_link()
@@ -153,4 +174,23 @@ ggraph(graph, 'fabric', sort.by = node_rank_fabric(), shadow.edges =TRUE) +
   geom_edge_span(aes(filter = shadow_edge), colour ='lightblue' , end_shape = 'square') + 
   geom_edge_span(aes(filter = !shadow_edge), end_shape = 'square') + 
   coord_fixed()
+
+## -----------------------------------------------------------------------------
+gr <- sfnetworks::as_sfnetwork(sfnetworks::roxel)
+
+ggraph(gr, 'sf') + 
+  geom_edge_sf(aes(color = type)) + 
+  geom_node_sf(size = 0.3)
+
+## -----------------------------------------------------------------------------
+gr <- create_notable('Walther')
+# Use stress layout to come up with a initial position
+prior <- create_layout(gr, 'stress')
+
+# Optimise placement with metro layout
+ggraph(gr, 'metro', x = prior$x, y = prior$y, grid_space = 1, max_movement = 50) + 
+  geom_edge_link(width = 4) + 
+  geom_node_point(size = 10) + 
+  geom_edge_link(color = 'white', width = 1) + 
+  geom_node_point(color = 'white', size = 4)
 

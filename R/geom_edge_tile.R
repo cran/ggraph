@@ -9,7 +9,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_edge_tile` understands the following
-#' aesthetics. Bold aesthetics are automatically set, but can be overridden.
+#' aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -42,11 +42,11 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' gr <- create_notable('zachary') %>%
-#'   mutate(group = group_infomap()) %>%
-#'   morph(to_split, group) %>%
-#'   activate(edges) %>%
-#'   mutate(edge_group = as.character(.N()$group[1])) %>%
+#' gr <- create_notable('zachary') |>
+#'   mutate(group = group_infomap()) |>
+#'   morph(to_split, group) |>
+#'   activate(edges) |>
+#'   mutate(edge_group = as.character(.N()$group[1])) |>
 #'   unmorph()
 #'
 #' ggraph(gr, 'matrix', sort.by = node_rank_hclust()) +
@@ -68,6 +68,6 @@ geom_edge_tile <- function(mapping = NULL, data = get_edges(),
   layer(
     data = data, mapping = mapping, stat = StatFilter, geom = GeomEdgeTile,
     position = position, show.legend = show.legend, inherit.aes = FALSE,
-    params = list(na.rm = FALSE, mirror = mirror, ...)
+    params = list2(mirror = mirror, ...)
   )
 }

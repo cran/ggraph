@@ -12,6 +12,8 @@ layout_tbl_graph_stress(
   tolerance = 1e-04,
   mds = TRUE,
   bbox = 50,
+  x = NULL,
+  y = NULL,
   circular = FALSE
 )
 
@@ -37,6 +39,10 @@ weights for the layout. Currently ignored for the sparse version}
 
 \item{bbox}{constrain dimension of output. Only relevant to determine the
 placement of disconnected graphs.}
+
+\item{x, y}{Expressions evaluated on the node data giving
+coordinates along x and/or y axis to fix nodes to. You can chose to only fix
+selected nodes by leaving the remaining nodes with \code{NA} values.}
 
 \item{circular}{ignored}
 
@@ -66,6 +72,7 @@ Ortmann, M. and Klimenta, M. and Brandes, U. (2016). \emph{A Sparse Stress Model
 Other layout_tbl_graph_*: 
 \code{\link{layout_tbl_graph_auto}()},
 \code{\link{layout_tbl_graph_backbone}()},
+\code{\link{layout_tbl_graph_cactustree}()},
 \code{\link{layout_tbl_graph_centrality}()},
 \code{\link{layout_tbl_graph_circlepack}()},
 \code{\link{layout_tbl_graph_dendrogram}()},
@@ -73,12 +80,15 @@ Other layout_tbl_graph_*:
 \code{\link{layout_tbl_graph_fabric}()},
 \code{\link{layout_tbl_graph_focus}()},
 \code{\link{layout_tbl_graph_hive}()},
+\code{\link{layout_tbl_graph_htree}()},
 \code{\link{layout_tbl_graph_igraph}()},
 \code{\link{layout_tbl_graph_linear}()},
 \code{\link{layout_tbl_graph_manual}()},
 \code{\link{layout_tbl_graph_matrix}()},
+\code{\link{layout_tbl_graph_metro}()},
 \code{\link{layout_tbl_graph_partition}()},
 \code{\link{layout_tbl_graph_pmds}()},
+\code{\link{layout_tbl_graph_sf}()},
 \code{\link{layout_tbl_graph_treemap}()},
 \code{\link{layout_tbl_graph_unrooted}()}
 }

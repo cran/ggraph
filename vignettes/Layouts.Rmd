@@ -109,8 +109,8 @@ method to tidygraph so others can benefit from your work.
 
 ## Layouts abound
 There's a lot of different layouts in `ggraph` --- All layouts from the 
-graphlayouts and igraph packages are available, an ggraph itself also provide
-some of the more specialised layouts itself. All in all ggraph provides well 
+graphlayouts and igraph packages are available, and ggraph itself also provides
+some of the more specialised layouts itself. All in all, ggraph provides well 
 above 20 different layouts to choose from, far more than we can cover in this 
 text. I urge you to explore the different layout types. Blindly running along 
 with the default layouts is a sad but common mistake in network visualisation 
@@ -176,7 +176,7 @@ Below is a sample of some of the layouts available through `igraph` applied to
 the highschool graph.
 
 ```{r, fig.show='hold', results='hide'}
-graph <- as_tbl_graph(highschool) %>% 
+graph <- as_tbl_graph(highschool) |> 
   mutate(degree = centrality_degree())
 lapply(c('stress', 'fr', 'lgl', 'graphopt'), function(layout) {
   ggraph(graph, layout = layout) + 
@@ -185,6 +185,13 @@ lapply(c('stress', 'fr', 'lgl', 'graphopt'), function(layout) {
     labs(caption = paste0('Layout: ', layout))
 })
 ```
+
+The default plot is the `"stress"` layout that uses stress majorization to 
+spread out nodes. It generally does a good job and is deterministic so that it
+doesn't change upon every call (many other layouts does that as they use 
+randomisation for the initial node positions). The stress layout also makes it
+possible to fix the location of certain nodes in one or two dimensions making it
+a very versatile starting point for your visualisation.
 
 ### Hive plots
 A hive plot, while still technically a node-edge diagram, is a bit different
@@ -195,7 +202,7 @@ graph structure. They are less common though, so use will often require some
 additional explanation.
 
 ```{r}
-graph <- graph %>% 
+graph <- graph |> 
   mutate(friends = ifelse(
     centrality_degree(mode = 'in') < 5, 'few',
     ifelse(centrality_degree(mode = 'in') >= 15, 'many', 'medium')
@@ -253,6 +260,32 @@ ggraph(graph, 'treemap', weight = size) +
   geom_node_point(aes(colour = depth))
 ```
 
+Cactustree is a layout type specifically developed for use with hierarchical 
+edge bundling, but can be used on it's own as well
+
+```{r}
+ggraph(graph, 'cactustree') + 
+  geom_node_circle(aes(fill = depth), size = 0.25) + 
+  coord_fixed()
+```
+
+```{r}
+importFrom <- match(flare$imports$from, flare$vertices$name)
+importTo <- match(flare$imports$to, flare$vertices$name)
+
+ggraph(graph, 'cactustree') + 
+  geom_node_circle(aes(fill = depth), 
+    size = 0.25, 
+    alpha = 0.2
+  ) + 
+  geom_conn_bundle(aes(colour = after_stat(index)),
+    data = get_con(importFrom, importTo),
+    edge_alpha = 0.25
+  ) +
+  theme(legend.position = "none") +
+  coord_fixed()
+```
+
 The most recognized tree plot is probably dendrograms though. If nothing else is
 stated the height of each node is calculated based on the distance to its 
 farthest sibling (the tree layout, on the other hand, puts all nodes at a 
@@ -288,8 +321,8 @@ implicitly position a node at the root. To avoid that you can use the `unrooted`
 layout instead.
 
 ```{r}
-tree <- create_tree(100, 2, directed = FALSE) %>% 
-  activate(edges) %>% 
+tree <- create_tree(100, 2, directed = FALSE) |> 
+  activate(edges) |> 
   mutate(length = runif(n()))
 ggraph(tree, 'unrooted', length = length) + 
   geom_edge_link()
@@ -350,6 +383,39 @@ ggraph(graph, 'fabric', sort.by = node_rank_fabric(), shadow.edges =TRUE) +
   geom_edge_span(aes(filter = !shadow_edge), end_shape = 'square') + 
   coord_fixed()
 ```
+
+### Spatial layouts
+ggraph has a few layouts aimed at data where the node has a physical location. 
+You may think this requires no layout at all and to some extent you are correct.
+
+ggraph supports spatial networks through the sfnetworks package and grabs the 
+node position and CRS from the data correctly when using the "sf" layout:
+
+```{r}
+gr <- sfnetworks::as_sfnetwork(sfnetworks::roxel)
+
+ggraph(gr, 'sf') + 
+  geom_edge_sf(aes(color = type)) + 
+  geom_node_sf(size = 0.3)
+```
+
+Another type of spatial layout is the metro layout which takes in a prior 
+position and attempts to make these positions fit into a grid-like structure,
+well known in railroad and metro maps.
+
+```{r}
+gr <- create_notable('Walther')
+# Use stress layout to come up with a initial position
+prior <- create_layout(gr, 'stress')
+
+# Optimise placement with metro layout
+ggraph(gr, 'metro', x = prior$x, y = prior$y, grid_space = 1, max_movement = 50) + 
+  geom_edge_link(width = 4) + 
+  geom_node_point(size = 10) + 
+  geom_edge_link(color = 'white', width = 1) + 
+  geom_node_point(color = 'white', size = 4)
+```
+
 
 ## Want more?
 Check out the other vignettes for more information on how to draw 

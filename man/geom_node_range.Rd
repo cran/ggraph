@@ -55,7 +55,7 @@ layout for showing the horizontal span of each node.
 \section{Aesthetics}{
 
 \code{geom_node_point} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{xend}
@@ -81,6 +81,7 @@ Other geom_node_*:
 \code{\link{geom_node_arc_bar}()},
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_point}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_text}()},
 \code{\link{geom_node_tile}()},
 \code{\link{geom_node_voronoi}()}

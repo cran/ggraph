@@ -52,7 +52,7 @@ level, making it possible to map a variable to the fill.
 \section{Aesthetics}{
 
 \code{geom_edge_density} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 
 \strong{x}
 \strong{y}
@@ -81,8 +81,8 @@ automatically be renamed appropriately.
 
 \examples{
 require(tidygraph)
-gr <- create_notable('bull') \%>\%
-  activate(edges) \%>\%
+gr <- create_notable('bull') |>
+  activate(edges) |>
   mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
 ggraph(gr, 'stress') +
@@ -93,6 +93,9 @@ ggraph(gr, 'stress') +
 Other geom_edge_*: 
 \code{\link{geom_edge_arc}()},
 \code{\link{geom_edge_bend}()},
+\code{\link{geom_edge_bundle_force}()},
+\code{\link{geom_edge_bundle_minimal}()},
+\code{\link{geom_edge_bundle_path}()},
 \code{\link{geom_edge_diagonal}()},
 \code{\link{geom_edge_elbow}()},
 \code{\link{geom_edge_fan}()},
@@ -101,6 +104,7 @@ Other geom_edge_*:
 \code{\link{geom_edge_loop}()},
 \code{\link{geom_edge_parallel}()},
 \code{\link{geom_edge_point}()},
+\code{\link{geom_edge_sf}()},
 \code{\link{geom_edge_span}()},
 \code{\link{geom_edge_tile}()}
 }

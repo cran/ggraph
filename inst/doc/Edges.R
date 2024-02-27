@@ -1,14 +1,14 @@
-## ---- include=FALSE-----------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 set.seed(2022)
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ggraph)
 library(tidygraph)
 library(purrr)
 library(rlang)
 
 set_graph_style(plot_margin = margin(1,1,1,1))
-hierarchy <- as_tbl_graph(hclust(dist(iris[, 1:4]))) %>% 
+hierarchy <- as_tbl_graph(hclust(dist(iris[, 1:4]))) |> 
   mutate(Class = map_bfs_back_chr(node_is_root(), .f = function(node, path, ...) {
     if (leaf[node]) {
       as.character(iris$Species[as.integer(label[node])])
@@ -22,10 +22,10 @@ hierarchy <- as_tbl_graph(hclust(dist(iris[, 1:4]))) %>%
     }
   }))
 
-hairball <- as_tbl_graph(highschool) %>% 
+hairball <- as_tbl_graph(highschool) |> 
   mutate(
     year_pop = map_local(mode = 'in', .f = function(neighborhood, ...) {
-      neighborhood %E>% pull(year) %>% table() %>% sort(decreasing = TRUE)
+      neighborhood %E>% pull(year) |> table() |> sort(decreasing = TRUE)
     }),
     pop_devel = map_chr(year_pop, function(pop) {
       if (length(pop) == 0 || length(unique(pop)) == 1) return('unchanged')
@@ -34,8 +34,8 @@ hairball <- as_tbl_graph(highschool) %>%
              '1958' = 'increased')
     }),
     popularity = map_dbl(year_pop, ~ .[1]) %|% 0
-  ) %>% 
-  activate(edges) %>% 
+  ) |> 
+  activate(edges) |> 
   mutate(year = as.character(year))
 
 ## -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ ggraph(hairball, layout = 'stress') +
 
 ## -----------------------------------------------------------------------------
 # let's make some of the student love themselves
-loopy_hairball <- hairball %>% 
+loopy_hairball <- hairball |> 
   bind_edges(tibble::tibble(from = 1:5, to = 1:5, year = rep('1957', 5)))
 ggraph(loopy_hairball, layout = 'stress') + 
   geom_edge_link(aes(colour = year), alpha = 0.25) + 
@@ -71,6 +71,18 @@ ggraph(hairball, layout = 'linear') +
 ggraph(hairball, layout = 'linear', circular = TRUE) + 
   geom_edge_arc(aes(colour = year)) + 
   coord_fixed()
+
+## -----------------------------------------------------------------------------
+ggraph(hairball) + 
+  geom_edge_bundle_force(n_cycle = 2, threshold = 0.4)
+
+## -----------------------------------------------------------------------------
+ggraph(hairball) + 
+  geom_edge_bundle_path()
+
+## -----------------------------------------------------------------------------
+ggraph(hairball) + 
+  geom_edge_bundle_minimal()
 
 ## -----------------------------------------------------------------------------
 ggraph(hierarchy, layout = 'dendrogram', height = height) + 
@@ -127,9 +139,9 @@ ggraph(small_tree, 'dendrogram') +
 
 ## -----------------------------------------------------------------------------
 # Random names - I swear
-simple <- create_notable('bull') %>% 
-  mutate(name = c('Thomas', 'Bob', 'Hadley', 'Winston', 'Baptiste')) %>% 
-  activate(edges) %>% 
+simple <- create_notable('bull') |> 
+  mutate(name = c('Thomas', 'Bob', 'Hadley', 'Winston', 'Baptiste')) |> 
+  activate(edges) |> 
   mutate(type = sample(c('friend', 'foe'), 5, TRUE))
 
 ## -----------------------------------------------------------------------------

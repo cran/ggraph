@@ -54,7 +54,7 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function. Cannot be jointy specified with
+a call to a position adjustment function. Cannot be jointly specified with
 \code{nudge_x} or \code{nudge_y}.}
 
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
@@ -97,7 +97,7 @@ These geoms are equivalent in functionality to \code{\link[ggplot2:geom_text]{gg
 \section{Aesthetics}{
 
 \code{geom_node_text} understands the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden. Italic aesthetics are required but
+automatically set, but can be overwritten. Italic aesthetics are required but
 not set by default
 \itemize{
 \item \strong{x}
@@ -117,7 +117,7 @@ not set by default
 
 \examples{
 require(tidygraph)
-gr <- create_notable('bull') \%>\%
+gr <- create_notable('bull') |>
   mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
 ggraph(gr, 'stress') +
@@ -132,6 +132,7 @@ Other geom_node_*:
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_point}()},
 \code{\link{geom_node_range}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_tile}()},
 \code{\link{geom_node_voronoi}()}
 }

@@ -51,7 +51,7 @@ conjunction with \code{\link[=layout_tbl_graph_matrix]{layout_tbl_graph_matrix()
 \section{Aesthetics}{
 
 \code{geom_edge_tile} understands the following
-aesthetics. Bold aesthetics are automatically set, but can be overridden.
+aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -73,11 +73,11 @@ automatically be renamed appropriately.
 
 \examples{
 require(tidygraph)
-gr <- create_notable('zachary') \%>\%
-  mutate(group = group_infomap()) \%>\%
-  morph(to_split, group) \%>\%
-  activate(edges) \%>\%
-  mutate(edge_group = as.character(.N()$group[1])) \%>\%
+gr <- create_notable('zachary') |>
+  mutate(group = group_infomap()) |>
+  morph(to_split, group) |>
+  activate(edges) |>
+  mutate(edge_group = as.character(.N()$group[1])) |>
   unmorph()
 
 ggraph(gr, 'matrix', sort.by = node_rank_hclust()) +
@@ -91,6 +91,9 @@ ggraph(gr, 'matrix', sort.by = node_rank_hclust()) +
 Other geom_edge_*: 
 \code{\link{geom_edge_arc}()},
 \code{\link{geom_edge_bend}()},
+\code{\link{geom_edge_bundle_force}()},
+\code{\link{geom_edge_bundle_minimal}()},
+\code{\link{geom_edge_bundle_path}()},
 \code{\link{geom_edge_density}()},
 \code{\link{geom_edge_diagonal}()},
 \code{\link{geom_edge_elbow}()},
@@ -100,6 +103,7 @@ Other geom_edge_*:
 \code{\link{geom_edge_loop}()},
 \code{\link{geom_edge_parallel}()},
 \code{\link{geom_edge_point}()},
+\code{\link{geom_edge_sf}()},
 \code{\link{geom_edge_span}()}
 }
 \author{

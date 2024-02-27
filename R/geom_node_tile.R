@@ -8,7 +8,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_treemap` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -34,7 +34,7 @@
 #' @examples
 #' # Create a graph of the flare class system
 #' library(tidygraph)
-#' flareGraph <- tbl_graph(flare$vertices, flare$edges) %>%
+#' flareGraph <- tbl_graph(flare$vertices, flare$edges) |>
 #'   mutate(
 #'     class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
 #'       if (dist <= 1) {
@@ -59,7 +59,7 @@ geom_node_tile <- function(mapping = NULL, data = NULL, position = 'identity',
   layer(
     data = data, mapping = mapping, stat = StatFilter, geom = GeomNodeTile,
     position = position, show.legend = show.legend, inherit.aes = FALSE,
-    params = list(na.rm = FALSE, ...)
+    params = list2(...)
   )
 }
 

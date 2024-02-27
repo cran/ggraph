@@ -135,7 +135,7 @@ direction and then shifted a fixed amount so that all edges are visible.
 \section{Aesthetics}{
 
 \code{geom_edge_parallel} and \code{geom_edge_parallel0} understand the following
-aesthetics. Bold aesthetics are automatically set, but can be overridden.
+aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -151,7 +151,7 @@ aesthetics. Bold aesthetics are automatically set, but can be overridden.
 }
 
 \code{geom_edge_parallel2} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -237,8 +237,8 @@ automatically be renamed appropriately.
 
 \examples{
 require(tidygraph)
-gr <- create_notable('bull') \%>\%
-  convert(to_directed) \%>\%
+gr <- create_notable('bull') |>
+  convert(to_directed) |>
   bind_edges(data.frame(from = c(1, 2, 2, 3), to = c(2, 1, 3, 2))) \%E>\%
   mutate(class = sample(letters[1:3], 9, TRUE)) \%N>\%
   mutate(class = sample(c('x', 'y'), 5, TRUE))
@@ -263,6 +263,9 @@ ggraph(gr, 'stress') +
 Other geom_edge_*: 
 \code{\link{geom_edge_arc}()},
 \code{\link{geom_edge_bend}()},
+\code{\link{geom_edge_bundle_force}()},
+\code{\link{geom_edge_bundle_minimal}()},
+\code{\link{geom_edge_bundle_path}()},
 \code{\link{geom_edge_density}()},
 \code{\link{geom_edge_diagonal}()},
 \code{\link{geom_edge_elbow}()},
@@ -271,6 +274,7 @@ Other geom_edge_*:
 \code{\link{geom_edge_link}()},
 \code{\link{geom_edge_loop}()},
 \code{\link{geom_edge_point}()},
+\code{\link{geom_edge_sf}()},
 \code{\link{geom_edge_span}()},
 \code{\link{geom_edge_tile}()}
 }

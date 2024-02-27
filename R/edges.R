@@ -49,7 +49,7 @@
 #' details for more information
 #'
 #' @param ... Additional data that will be cbind'ed together with the returned
-#' edge data.
+#' edge data. Accepts expressions that will be evaluated on the edge data
 #'
 #' @return A data.frame with columns dependent on format as well as the graph
 #' type. In addition to the columns discussed in the details section,
@@ -74,8 +74,9 @@
 #'
 get_edges <- function(format = 'short', collapse = 'none', ...) {
   if (!collapse %in% c('none', 'all', 'direction')) {
-    cli::cli_abort('{.arg ollapse} must be either {.val none}, {.val all} or {.val direction}')
+    cli::cli_abort('{.arg collapse} must be either {.val none}, {.val all} or {.val direction}')
   }
+  dots <- enquos(...)
   function(layout) {
     edges <- collect_edges(layout)
     edges <- switch(
@@ -90,7 +91,10 @@ get_edges <- function(format = 'short', collapse = 'none', ...) {
       long = format_long_edges(edges, layout),
       cli::cli_abort('Unknown {.arg format}. Use either {.val short} or {.val long}')
     )
-    extra_data <- lapply(list2(...), rep, length.out = nrow(edges))
+    extra_data <- lapply(dots, function(x) {
+      val <- eval_tidy(x, edges)
+      rep(val, length.out = nrow(edges))
+    })
     if (length(extra_data) > 0) {
       edges <- cbind(
         edges,
@@ -106,6 +110,7 @@ get_edges <- function(format = 'short', collapse = 'none', ...) {
 collect_edges <- function(layout) {
   UseMethod('collect_edges', layout)
 }
+#' @export
 collect_edges.default <- function(layout) {
   attr(layout, 'edges')
 }
@@ -185,7 +190,7 @@ complete_edge_aes <- function(aesthetics) {
 }
 expand_edge_aes <- function(x) {
   short_names <- names(x) %in% c(
-    'colour', 'color', 'fill', 'linetype', 'shape', 'size', 'width', 'alpha'
+    'colour', 'color', 'fill', 'linetype', 'shape', 'size', 'width', 'alpha', 'linewidth'
   )
   names(x)[short_names] <- paste0('edge_', names(x)[short_names])
   if (all(c('edge_linewidth', 'edge_width') %in% names(x) == c(TRUE, FALSE))) {
@@ -193,28 +198,28 @@ expand_edge_aes <- function(x) {
   }
   x
 }
-#' @importFrom dplyr %>% group_by top_n ungroup
+#' @importFrom dplyr group_by top_n ungroup
 collapse_all_edges <- function(edges) {
   from <- pmin(edges$from, edges$to)
   to <- pmax(edges$to, edges$from)
   id <- paste(from, to, sep = '-')
   if (anyDuplicated(id)) {
     edges$.id <- id
-    edges <- edges %>%
-      group_by(.data$.id) %>%
-      top_n(1) %>%
+    edges <- edges |>
+      group_by(.data$.id) |>
+      top_n(1) |>
       ungroup()
   }
   data_frame0(edges)
 }
-#' @importFrom dplyr %>% group_by top_n ungroup
+#' @importFrom dplyr group_by top_n ungroup
 collapse_dir_edges <- function(edges) {
   id <- paste(edges$from, edges$to, sep = '-')
   if (anyDuplicated(id)) {
     edges$.id <- id
-    edges <- edges %>%
-      group_by(.data$.id) %>%
-      top_n(1) %>%
+    edges <- edges |>
+      group_by(.data$.id) |>
+      top_n(1) |>
       ungroup()
   }
   data_frame0(edges)

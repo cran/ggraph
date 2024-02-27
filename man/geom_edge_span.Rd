@@ -141,7 +141,7 @@ layouts \code{x}and \code{xend} must be given explicitly.
 \section{Aesthetics}{
 
 \code{geom_edge_span} and \code{geom_edge_span0} understand the following
-aesthetics. Bold aesthetics are automatically set, but can be overridden.
+aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -155,7 +155,7 @@ aesthetics. Bold aesthetics are automatically set, but can be overridden.
 }
 
 \code{geom_edge_span2} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -262,6 +262,9 @@ ggraph(gr, 'fabric', sort.by = node_rank_fabric(), shadow.edges = TRUE) +
 Other geom_edge_*: 
 \code{\link{geom_edge_arc}()},
 \code{\link{geom_edge_bend}()},
+\code{\link{geom_edge_bundle_force}()},
+\code{\link{geom_edge_bundle_minimal}()},
+\code{\link{geom_edge_bundle_path}()},
 \code{\link{geom_edge_density}()},
 \code{\link{geom_edge_diagonal}()},
 \code{\link{geom_edge_elbow}()},
@@ -271,6 +274,7 @@ Other geom_edge_*:
 \code{\link{geom_edge_loop}()},
 \code{\link{geom_edge_parallel}()},
 \code{\link{geom_edge_point}()},
+\code{\link{geom_edge_sf}()},
 \code{\link{geom_edge_tile}()}
 }
 \author{

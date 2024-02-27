@@ -10,7 +10,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_edge_density` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' **x**
 #' **y**
@@ -39,8 +39,8 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' gr <- create_notable('bull') %>%
-#'   activate(edges) %>%
+#' gr <- create_notable('bull') |>
+#'   activate(edges) |>
 #'   mutate(class = sample(letters[1:3], n(), replace = TRUE))
 #'
 #' ggraph(gr, 'stress') +
@@ -146,7 +146,8 @@ GeomEdgeDensity <- ggproto('GeomEdgeDensity', GeomRaster,
   },
   draw_key = function(data, params, size) {
     rectGrob(gp = gpar(
-      col = NA, fill = alpha(data),
+      col = NA,
+      fill = alpha(data$edge_fill %||% data$fill %||% "darkgrey"),
       lty = 0
     ))
   },
@@ -168,7 +169,7 @@ geom_edge_density <- function(mapping = NULL, data = get_edges('short'),
     geom = GeomEdgeDensity, position = position,
     show.legend = show.legend, inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(na.rm = FALSE, n = n, ...)
+      list2(n = n, ...)
     )
   )
 }

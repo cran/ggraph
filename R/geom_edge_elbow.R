@@ -13,7 +13,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_edge_elbow` and `geom_edge_elbow0` understand the following
-#' aesthetics. Bold aesthetics are automatically set, but can be overridden.
+#' aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -28,7 +28,7 @@
 #' - filter
 #'
 #' `geom_edge_elbow2` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -74,10 +74,10 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' irisDen <- hclust(dist(iris[1:4], method = 'euclidean'), method = 'ward.D2') %>%
-#'   as_tbl_graph() %>%
-#'   mutate(class = sample(letters[1:3], n(), TRUE)) %>%
-#'   activate(edges) %>%
+#' irisDen <- hclust(dist(iris[1:4], method = 'euclidean'), method = 'ward.D2') |>
+#'   as_tbl_graph() |>
+#'   mutate(class = sample(letters[1:3], n(), TRUE)) |>
+#'   activate(edges) |>
 #'   mutate(class = sample(letters[1:3], n(), TRUE))
 #'
 #' ggraph(irisDen, 'dendrogram', circular = TRUE) +
@@ -229,9 +229,9 @@ geom_edge_elbow <- function(mapping = NULL, data = get_edges(),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
+      list2(
         arrow = arrow, lineend = lineend, linejoin = linejoin,
-        linemitre = linemitre, na.rm = FALSE, n = n,
+        linemitre = linemitre, n = n,
         interpolate = FALSE, flipped = flipped, strength = strength,
         label_colour = label_colour, label_alpha = label_alpha,
         label_parse = label_parse, check_overlap = check_overlap,
@@ -300,9 +300,9 @@ geom_edge_elbow2 <- function(mapping = NULL, data = get_edges('long'),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
+      list2(
         arrow = arrow, lineend = lineend, linejoin = linejoin,
-        linemitre = linemitre, na.rm = FALSE, n = n,
+        linemitre = linemitre, n = n,
         interpolate = TRUE, flipped = flipped, strength = strength,
         label_colour = label_colour, label_alpha = label_alpha,
         label_parse = label_parse, check_overlap = check_overlap,
@@ -404,9 +404,9 @@ geom_edge_elbow0 <- function(mapping = NULL, data = get_edges(),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE,
-        interpolate = FALSE, flipped = flipped, ...
+      list2(
+        arrow = arrow, lineend = lineend, interpolate = FALSE, flipped = flipped,
+        ...
       )
     )
   )

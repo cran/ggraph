@@ -8,7 +8,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_node_voronoi` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -32,7 +32,7 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' gr <- create_notable('meredith') %>%
+#' gr <- create_notable('meredith') |>
 #'   mutate(group = sample(letters[1:4], n(), TRUE))
 #'
 #' ggraph(gr) +
@@ -56,7 +56,7 @@ geom_node_voronoi <- function(mapping = NULL, data = NULL, position = 'identity'
   layer(
     data = data, mapping = mapping, stat = StatNodeVoronoi, geom = GeomShape,
     position = position, show.legend = show.legend, inherit.aes = FALSE,
-    params = list(na.rm = FALSE, bound = bound, eps = eps, max.radius = max.radius,
+    params = list2(bound = bound, eps = eps, max.radius = max.radius,
                   normalize = normalize, asp.ratio = asp.ratio, expand = expand,
                   radius = radius, ...)
   )

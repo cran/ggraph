@@ -94,7 +94,7 @@ automatically be renamed appropriately.
 \section{Aesthetics}{
 
 geom_conn_bundle* understands the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item{\strong{x}}
 \item{\strong{y}}
@@ -119,7 +119,7 @@ automatically set, but can be overridden.
 \examples{
 # Create a graph of the flare class system
 library(tidygraph)
-flareGraph <- tbl_graph(flare$vertices, flare$edges) \%>\%
+flareGraph <- tbl_graph(flare$vertices, flare$edges) |>
   mutate(
     class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
       if (dist <= 1) {

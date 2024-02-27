@@ -45,7 +45,7 @@ something that should be handled with care - e.g. by only zooming in on a
 specific region.
 }
 \references{
-BioFabric website: \url{http://www.biofabric.org}
+BioFabric website: \url{https://biofabric.systemsbiology.net}
 
 Longabaugh, William J.R. (2012).
 \emph{Combing the hairball with BioFabric: a new approach for visualization of large networks}.
@@ -55,18 +55,22 @@ BMC Bioinformatics, 13: 275. \doi{10.1186/1471-2105-13-275}
 Other layout_tbl_graph_*: 
 \code{\link{layout_tbl_graph_auto}()},
 \code{\link{layout_tbl_graph_backbone}()},
+\code{\link{layout_tbl_graph_cactustree}()},
 \code{\link{layout_tbl_graph_centrality}()},
 \code{\link{layout_tbl_graph_circlepack}()},
 \code{\link{layout_tbl_graph_dendrogram}()},
 \code{\link{layout_tbl_graph_eigen}()},
 \code{\link{layout_tbl_graph_focus}()},
 \code{\link{layout_tbl_graph_hive}()},
+\code{\link{layout_tbl_graph_htree}()},
 \code{\link{layout_tbl_graph_igraph}()},
 \code{\link{layout_tbl_graph_linear}()},
 \code{\link{layout_tbl_graph_manual}()},
 \code{\link{layout_tbl_graph_matrix}()},
+\code{\link{layout_tbl_graph_metro}()},
 \code{\link{layout_tbl_graph_partition}()},
 \code{\link{layout_tbl_graph_pmds}()},
+\code{\link{layout_tbl_graph_sf}()},
 \code{\link{layout_tbl_graph_stress}()},
 \code{\link{layout_tbl_graph_treemap}()},
 \code{\link{layout_tbl_graph_unrooted}()}

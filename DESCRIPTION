@@ -1,7 +1,7 @@
 Package: ggraph
 Type: Package
 Title: An Implementation of Grammar of Graphics for Graphs and Networks
-Version: 2.1.0
+Version: 2.2.0
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
@@ -18,23 +18,22 @@ Description: The grammar of graphics as implemented in ggplot2 is a poor fit for
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
-Imports: Rcpp (>= 0.12.2), dplyr, ggforce (>= 0.3.1), grid, igraph (>=
-        1.0.0), scales, MASS, digest, gtable, ggrepel, utils, stats,
-        viridis, rlang, tidygraph, graphlayouts (>= 0.5.0), withr, cli,
-        vctrs, lifecycle
+Imports: dplyr, ggforce (>= 0.3.1), grid, igraph (>= 1.0.0), scales,
+        MASS, ggrepel, utils, stats, viridis, rlang, tidygraph,
+        graphlayouts (>= 1.1.0), withr, cli, vctrs, lifecycle, memoise
 Suggests: network, knitr, rmarkdown, purrr, tibble, seriation, deldir,
-        gganimate, covr
-LinkingTo: Rcpp
-RoxygenNote: 7.2.1
-Depends: R (>= 2.10), ggplot2 (>= 3.0.0)
+        gganimate, covr, sf, sfnetworks
+LinkingTo: cpp11
+RoxygenNote: 7.3.1
+Depends: R (>= 2.10), ggplot2 (>= 3.5.0)
 VignetteBuilder: knitr
 URL: https://ggraph.data-imaginist.com,
         https://github.com/thomasp85/ggraph
 BugReports: https://github.com/thomasp85/ggraph/issues
 NeedsCompilation: yes
-Packaged: 2022-10-05 07:34:05 UTC; thomas
+Packaged: 2024-02-27 14:26:18 UTC; thomas
 Author: Thomas Lin Pedersen [cre, aut]
     (<https://orcid.org/0000-0002-5147-4711>),
   RStudio [cph]
 Repository: CRAN
-Date/Publication: 2022-10-09 20:33:19 UTC
+Date/Publication: 2024-02-27 22:30:09 UTC

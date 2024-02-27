@@ -1,7 +1,7 @@
-## ---- include=FALSE-----------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 set.seed(2022)
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ggraph)
 library(tidygraph)
 
@@ -31,7 +31,7 @@ ggraph(gr, layout = 'dendrogram', circular = TRUE) +
   coord_fixed()
 
 ## -----------------------------------------------------------------------------
-graph <- create_notable('meredith') %>% 
+graph <- create_notable('meredith') |> 
   mutate(group = sample(c('A', 'B'), n(), TRUE))
 
 ggraph(graph, 'stress') + 

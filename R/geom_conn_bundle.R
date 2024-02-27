@@ -16,7 +16,7 @@
 #'
 #' @section Aesthetics:
 #' geom_conn_bundle* understands the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #' \itemize{
 #'  \item{\strong{x}}
 #'  \item{\strong{y}}
@@ -58,7 +58,7 @@
 #' @examples
 #' # Create a graph of the flare class system
 #' library(tidygraph)
-#' flareGraph <- tbl_graph(flare$vertices, flare$edges) %>%
+#' flareGraph <- tbl_graph(flare$vertices, flare$edges) |>
 #'   mutate(
 #'     class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
 #'       if (dist <= 1) {
@@ -123,9 +123,9 @@ geom_conn_bundle <- function(mapping = NULL, data = get_con(),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE, n = n,
-        interpolate = FALSE, tension = tension, type = 'clamped', ...
+      list2(
+        arrow = arrow, lineend = lineend, n = n, interpolate = FALSE,
+        tension = tension, type = 'clamped', ...
       )
     )
   )
@@ -162,8 +162,8 @@ geom_conn_bundle2 <- function(mapping = NULL, data = get_con(),
     inherit.aes = FALSE,
     params = expand_edge_aes(
       list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE, n = n,
-        interpolate = TRUE, tension = tension, type = 'clamped', ...
+        arrow = arrow, lineend = lineend, n = n, interpolate = TRUE,
+        tension = tension, type = 'clamped', ...
       )
     )
   )
@@ -198,9 +198,9 @@ geom_conn_bundle0 <- function(mapping = NULL, data = get_con(),
     geom = GeomEdgeBspline, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE,
-        tension = tension, type = 'clamped', ...
+      list2(
+        arrow = arrow, lineend = lineend, tension = tension, type = 'clamped',
+        ...
       )
     )
   )

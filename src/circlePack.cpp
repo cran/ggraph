@@ -1,11 +1,31 @@
-#include <Rcpp.h>
 #include <algorithm>
 
-using namespace Rcpp;
+#include <cpp11/doubles.hpp>
+#include <cpp11/integers.hpp>
+#include <cpp11/matrix.hpp>
+#include <cpp11/sexp.hpp>
+#include <cpp11/R.hpp>
+#include <R_ext/Random.h>
 
-inline int randWrapper(const int n) {
-  return std::floor(float(unif_rand()*n));
-}
+#include <deque>
+#include <vector>
+
+struct randWrapper {
+  using result_type = unsigned int;
+
+  static constexpr result_type min() {
+    return 0;
+  }
+
+  static constexpr result_type max() {
+    return RAND_MAX;
+  }
+
+  result_type operator()() {
+    return unif_rand()*RAND_MAX;
+  }
+};
+
 struct Circle {
   double x;
   double y;
@@ -85,8 +105,8 @@ class FrontChain {
   };
   Circle enclose1(Circle* c1) {
     Circle enc = {c1->x, c1->y, c1->r};
-    if (enc.r > 1e10) {
-      stop("enc1 error");
+    if (enc.r > 1e10 || enc.r < 0) {
+      cpp11::stop("enc1 error");
     }
     return enc;
   };
@@ -100,36 +120,37 @@ class FrontChain {
       (c1->y + c2->y + dy / l * dr) / 2,
       (l + c1->r + c2->r) / 2
     };
-    if (enc.r > 1e10) {
-      stop("enc2 error");
+    if (enc.r > 1e10 || enc.r < 0) {
+      cpp11::stop("enc2 error");
     }
     return enc;
   };
   Circle enclose3(Circle* c1, Circle* c2, Circle* c3) {
-    double A2 = 2 * (c1->x - c2->x);
-    double B2 = 2 * (c1->y - c2->y);
-    double C2 = 2 * (c2->r - c1->r);
-    double D2 = c1->x * c1->x + c1->y * c1->y - c1->r * c1->r - c2->x * c2->x - c2->y * c2->y + c2->r * c2->r;
-    double A3 = 2 * (c1->x - c3->x);
-    double B3 = 2 * (c1->y - c3->y);
-    double C3 = 2 * (c3->r - c1->r);
-    double D3 = c1->x * c1->x + c1->y * c1->y - c1->r * c1->r - c3->x * c3->x - c3->y * c3->y + c3->r * c3->r;
+    double A2 = c1->x - c2->x;
+    double A3 = c1->x - c3->x;
+    double B2 = c1->y - c2->y;
+    double B3 = c1->y - c3->y;
+    double C2 = c2->r - c1->r;
+    double C3 = c3->r - c1->r;
+    double D1 = c1->x * c1->x + c1->y * c1->y - c1->r * c1->r;
+    double D2 = D1 - c2->x * c2->x - c2->y * c2->y + c2->r * c2->r;
+    double D3 = D1 - c3->x * c3->x - c3->y * c3->y + c3->r * c3->r;
     double AB = A3 * B2 - A2 * B3;
-    double XA = (B2 * D3 - B3 * D2) / AB - c1->x;
+    double XA = (B2 * D3 - B3 * D2) / (AB * 2) - c1->x;
     double XB = (B3 * C2 - B2 * C3) / AB;
-    double YA = (A3 * D2 - A2 * D3) / AB - c1->y;
+    double YA = (A3 * D2 - A2 * D3) / (AB * 2) - c1->y;
     double YB = (A2 * C3 - A3 * C2) / AB;
     double A = XB * XB + YB * YB - 1;
     double B = 2 * (XA * XB + YA * YB + c1->r);
     double C = XA * XA + YA * YA - c1->r * c1->r;
-    double r = (-B - std::sqrt(float(B * B - 4 * A * C))) / (2 * A);
+    double r = -(std::abs(A) > 1e-6 ? (B + std::sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
     Circle enc = {
       XA + XB * r + c1->x,
       YA + YB * r + c1->y,
       r
     };
-    if (enc.r > 1e10) {
-      stop("enc3 error");
+    if (enc.r > 1e10 || enc.r < 0) {
+      cpp11::stop("enc3 error");
     }
     return enc;
   };
@@ -165,17 +186,12 @@ public:
     c1->x = 0;
     c1->y = 0;
     double d12 = c1->r + c2->r;
-    double angle2 = (2 * M_PI) * R::runif(0, 1);
+    double angle2 = (2 * M_PI) * unif_rand();
     c2->x = std::cos(float(angle2)) * d12;
     c2->y = std::sin(float(angle2)) * d12;
 
     // Place third circle according to the first two
     place(c3, c2, c1);
-
-    // Set weighted center
-    double a1 = c1->r*c1->r;
-    double a2 = c2->r*c2->r;
-    double a3 = c3->r*c3->r;
 
     // Inititalize the front chain
     c1->next = c2;
@@ -191,7 +207,7 @@ public:
     c1->x = 0;
     c1->y = 0;
     double d12 = c1->r + c2->r;
-    double angle2 = (2 * M_PI) * R::runif(0, 1);
+    double angle2 = (2 * M_PI) * unif_rand();
     c2->x = std::cos(float(angle2)) * d12;
     c2->y = std::sin(float(angle2)) * d12;
 
@@ -295,7 +311,7 @@ public:
     } else if (fc.size() == 2) {
       enclosure = enclose2(fc[0], fc[1]);
     } else {
-      std::random_shuffle(fc.begin(), fc.end(), randWrapper);
+      std::shuffle(fc.begin(), fc.end(), randWrapper());
       std::deque<Circle*> Q;
       enclosure = encloseN(fc.begin(), fc.end(), Q);
     }
@@ -304,7 +320,7 @@ public:
 
 FrontChain pack_circles(std::deque<Circle> &circles) {
   if (circles.size() == 0) {
-    stop("Cannot pack an empty set of circles");
+    cpp11::stop("Cannot pack an empty set of circles");
   }
 
   std::deque<Circle>::iterator itc;
@@ -394,14 +410,13 @@ public:
     }
   }
 };
-std::vector<NodePack*> createHierarchy(std::vector<int> parent, std::vector<double> weight) {
+std::vector<NodePack*> createHierarchy(cpp11::integers &parent, cpp11::doubles &weight) {
   std::vector<NodePack*> nodes;
-  unsigned int i;
-  for (i = 0; i < parent.size(); ++i) {
+  for (R_xlen_t i = 0; i < parent.size(); ++i) {
     NodePack* node = new NodePack(i + 1, weight[i]);
     nodes.push_back(node);
   }
-  for (i = 0; i < parent.size(); ++i) {
+  for (R_xlen_t i = 0; i < parent.size(); ++i) {
     if (parent[i] >= 0) {
       nodes[parent[i]]->addNode(nodes[i]);
     }
@@ -418,58 +433,24 @@ int findTopNode(std::vector<NodePack*>& nodes) {
     }
   }
   if (!found) {
-    stop("No top node. Is this a tree structure?");
+    cpp11::stop("No top node. Is this a tree structure?");
   }
   return (int) i;
 }
-//' Pack circles together
-//'
-//' This function is a direct interface to the circle packing algorithm used by
-//' \code{\link{layout_tbl_graph_circlepack}}. It takes a vector of sizes and
-//' returns the x and y position of each circle as a two-column matrix.
-//'
-//' @param areas A vector of circle areas
-//'
-//' @return A matrix with two columns and the same number of rows as the length
-//' of the "areas" vector. The matrix has the following attributes added:
-//' "enclosing_radius" giving the radius of the smallest enclosing circle, and
-//' "front_chain" giving the terminating members of the front chain (see
-//' Wang \emph{et al}. 2006).
-//'
-//' @references
-//' Wang, W., Wang, H. H., Dai, G., & Wang, H. (2006). \emph{Visualization of
-//' large hierarchical data by circle packing}. Chi, 517-520.
-//'
-//' @export
-//'
-//' @examples
-//' library(ggforce)
-//' sizes <- sample(10, 100, TRUE)
-//'
-//' position <- pack_circles(sizes)
-//' data <- data.frame(x = position[,1], y = position[,2], r = sqrt(sizes/pi))
-//'
-//' ggplot() +
-//'   geom_circle(aes(x0 = x, y0 = y, r = r), data = data, fill = 'steelblue') +
-//'   geom_circle(aes(x0 = 0, y0 = 0, r = attr(position, 'enclosing_radius'))) +
-//'   geom_polygon(aes(x = x, y = y),
-//'                data = data[attr(position, 'front_chain'), ],
-//'                fill = NA,
-//'                colour = 'black')
-//'
-//[[Rcpp::export(name = "pack_circles")]]
-NumericMatrix pack(NumericVector areas) {
-  NumericVector::iterator itr;
+
+[[cpp11::register]]
+cpp11::sexp pack(cpp11::doubles areas) {
+  GetRNGstate();
   std::deque<Circle> circles;
-  NumericMatrix res(areas.size(), 2);
-  for (itr = areas.begin(); itr != areas.end(); itr++) {
-    Circle c = {0, 0, std::sqrt(float(*itr / M_PI)), static_cast<int>(circles.size()) + 1};
+  cpp11::writable::doubles_matrix<> res(areas.size(), 2);
+  for (R_xlen_t i = 0; i < areas.size(); ++i) {
+    Circle c = {0, 0, std::sqrt(areas[i] / M_PI), static_cast<int>(circles.size()) + 1};
     circles.push_back(c);
   }
-  if (circles.size() == 0) {
-    res.attr("enclosing_radius") = 0;
-    res.attr("front_chain") = IntegerVector(0);
-  } else {
+  cpp11::writable::doubles rad = {0.0};
+  cpp11::writable::integers chain;
+
+  if (circles.size() != 0) {
     FrontChain fc = pack_circles(circles);
 
     for (int i = 0; i < areas.size(); i++) {
@@ -477,18 +458,25 @@ NumericMatrix pack(NumericVector areas) {
       res(i, 1) = circles[i].y;
     }
 
-    res.attr("enclosing_radius") = fc.enclose_radius();
-    res.attr("front_chain") = wrap(fc.chain_ind());
+    rad[0] = fc.enclose_radius();
+    auto chain_ind = fc.chain_ind();
+    chain = cpp11::writable::integers(chain_ind.begin(), chain_ind.end());
   }
+  cpp11::sexp resexp(res.data());
+  resexp.attr("enclosing_radius") = rad;
+  resexp.attr("front_chain") = chain;
 
-  return res;
+  PutRNGstate();
+
+  return resexp;
 }
 
-//[[Rcpp::export]]
-NumericMatrix circlePackLayout(IntegerVector parent, NumericVector weight) {
-  NumericMatrix res(parent.size(), 3);
+[[cpp11::register]]
+cpp11::writable::doubles_matrix<> circlePackLayout(cpp11::integers parent, cpp11::doubles weight) {
+  GetRNGstate();
+  cpp11::writable::doubles_matrix<> res(parent.size(), 3);
   unsigned int i;
-  std::vector<NodePack*> nodes = createHierarchy(as< std::vector<int> >(parent), as< std::vector<double> >(weight));
+  std::vector<NodePack*> nodes = createHierarchy(parent, weight);
 
   int startNode = findTopNode(nodes);
 
@@ -501,6 +489,6 @@ NumericMatrix circlePackLayout(IntegerVector parent, NumericVector weight) {
     res(i, 2) = nodes[i]->r;
     delete nodes[i];
   }
-
+  PutRNGstate();
   return res;
 }

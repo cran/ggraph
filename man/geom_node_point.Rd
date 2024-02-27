@@ -55,7 +55,7 @@ and allows for simple plotting of nodes in different shapes, colours and sizes.
 \section{Aesthetics}{
 
 \code{geom_node_point} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -71,7 +71,7 @@ automatically set, but can be overridden.
 
 \examples{
 require(tidygraph)
-gr <- create_notable('bull') \%>\%
+gr <- create_notable('bull') |>
   mutate(class = sample(letters[1:3], n(), replace = TRUE))
 
 ggraph(gr, 'stress') + geom_node_point()
@@ -81,6 +81,7 @@ Other geom_node_*:
 \code{\link{geom_node_arc_bar}()},
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_range}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_text}()},
 \code{\link{geom_node_tile}()},
 \code{\link{geom_node_voronoi}()}

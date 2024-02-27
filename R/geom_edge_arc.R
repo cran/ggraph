@@ -14,7 +14,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_edge_arc` and `geom_edge_arc0` understand the following
-#' aesthetics. Bold aesthetics are automatically set, but can be overridden.
+#' aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -28,7 +28,7 @@
 #' - filter
 #'
 #' `geom_edge_arc2` understand the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden.
+#' automatically set, but can be overwritten.
 #'
 #' - **x**
 #' - **y**
@@ -81,14 +81,14 @@
 #' @examples
 #' require(tidygraph)
 #' # Make a graph with different directions of edges
-#' gr <- create_notable('Meredith') %>%
-#'   convert(to_directed) %>%
-#'   mutate(class = sample(letters[1:3], n(), replace = TRUE)) %>%
-#'   activate(edges) %>%
+#' gr <- create_notable('Meredith') |>
+#'   convert(to_directed) |>
+#'   mutate(class = sample(letters[1:3], n(), replace = TRUE)) |>
+#'   activate(edges) |>
 #'   mutate(
 #'     class = sample(letters[1:3], n(), replace = TRUE),
 #'     switch = sample(c(TRUE, FALSE), n(), replace = TRUE)
-#'   ) %>%
+#'   ) |>
 #'   reroute(from = to, to = from, subset = switch)
 #'
 #' ggraph(gr, 'linear') +
@@ -150,9 +150,9 @@ geom_edge_arc <- function(mapping = NULL, data = get_edges(),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
+      list2(
         arrow = arrow, lineend = lineend, linejoin = linejoin,
-        linemitre = linemitre, na.rm = FALSE, n = n,
+        linemitre = linemitre, n = n,
         interpolate = FALSE, strength = strength, fold = fold,
         label_colour = label_colour, label_alpha = label_alpha,
         label_parse = label_parse, check_overlap = check_overlap,
@@ -207,9 +207,9 @@ geom_edge_arc2 <- function(mapping = NULL, data = get_edges('long'),
     geom = GeomEdgePath, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
+      list2(
         arrow = arrow, lineend = lineend, linejoin = linejoin,
-        linemitre = linemitre, na.rm = FALSE, n = n,
+        linemitre = linemitre, n = n,
         interpolate = TRUE, strength = strength, fold = fold,
         label_colour = label_colour, label_alpha = label_alpha,
         label_parse = label_parse, check_overlap = check_overlap,
@@ -252,9 +252,8 @@ geom_edge_arc0 <- function(mapping = NULL, data = get_edges(),
     geom = GeomEdgeBezier, position = position, show.legend = show.legend,
     inherit.aes = FALSE,
     params = expand_edge_aes(
-      list(
-        arrow = arrow, lineend = lineend, na.rm = FALSE,
-        strength = strength, fold = FALSE, ...
+      list2(
+        arrow = arrow, lineend = lineend, strength = strength, fold = FALSE, ...
       )
     )
   )

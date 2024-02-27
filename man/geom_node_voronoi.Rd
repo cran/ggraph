@@ -98,7 +98,7 @@ tile.
 \section{Aesthetics}{
 
 \code{geom_node_voronoi} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -114,7 +114,7 @@ automatically set, but can be overridden.
 
 \examples{
 require(tidygraph)
-gr <- create_notable('meredith') \%>\%
+gr <- create_notable('meredith') |>
   mutate(group = sample(letters[1:4], n(), TRUE))
 
 ggraph(gr) +
@@ -134,6 +134,7 @@ Other geom_node_*:
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_point}()},
 \code{\link{geom_node_range}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_text}()},
 \code{\link{geom_node_tile}()}
 }

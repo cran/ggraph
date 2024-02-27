@@ -154,7 +154,7 @@ to the distance between the nodes.
 \section{Aesthetics}{
 
 \code{geom_edge_arc} and \code{geom_edge_arc0} understand the following
-aesthetics. Bold aesthetics are automatically set, but can be overridden.
+aesthetics. Bold aesthetics are automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -169,7 +169,7 @@ aesthetics. Bold aesthetics are automatically set, but can be overridden.
 }
 
 \code{geom_edge_arc2} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -255,14 +255,14 @@ automatically be renamed appropriately.
 \examples{
 require(tidygraph)
 # Make a graph with different directions of edges
-gr <- create_notable('Meredith') \%>\%
-  convert(to_directed) \%>\%
-  mutate(class = sample(letters[1:3], n(), replace = TRUE)) \%>\%
-  activate(edges) \%>\%
+gr <- create_notable('Meredith') |>
+  convert(to_directed) |>
+  mutate(class = sample(letters[1:3], n(), replace = TRUE)) |>
+  activate(edges) |>
   mutate(
     class = sample(letters[1:3], n(), replace = TRUE),
     switch = sample(c(TRUE, FALSE), n(), replace = TRUE)
-  ) \%>\%
+  ) |>
   reroute(from = to, to = from, subset = switch)
 
 ggraph(gr, 'linear') +
@@ -277,6 +277,9 @@ ggraph(gr, 'linear', circular = TRUE) +
 \seealso{
 Other geom_edge_*: 
 \code{\link{geom_edge_bend}()},
+\code{\link{geom_edge_bundle_force}()},
+\code{\link{geom_edge_bundle_minimal}()},
+\code{\link{geom_edge_bundle_path}()},
 \code{\link{geom_edge_density}()},
 \code{\link{geom_edge_diagonal}()},
 \code{\link{geom_edge_elbow}()},
@@ -286,6 +289,7 @@ Other geom_edge_*:
 \code{\link{geom_edge_loop}()},
 \code{\link{geom_edge_parallel}()},
 \code{\link{geom_edge_point}()},
+\code{\link{geom_edge_sf}()},
 \code{\link{geom_edge_span}()},
 \code{\link{geom_edge_tile}()}
 }

@@ -5,7 +5,7 @@
 #'
 #' @section Aesthetics:
 #' `geom_node_text` understands the following aesthetics. Bold aesthetics are
-#' automatically set, but can be overridden. Italic aesthetics are required but
+#' automatically set, but can be overwritten. Italic aesthetics are required but
 #' not set by default
 #'
 #' - **x**
@@ -40,7 +40,7 @@
 #'
 #' @examples
 #' require(tidygraph)
-#' gr <- create_notable('bull') %>%
+#' gr <- create_notable('bull') |>
 #'   mutate(class = sample(letters[1:3], n(), replace = TRUE))
 #'
 #' ggraph(gr, 'stress') +
@@ -64,17 +64,21 @@ geom_node_text <- function(mapping = NULL, data = NULL, position = 'identity',
     }
     position <- position_nudge(nudge_x, nudge_y)
   }
-  params <- list(parse = parse, na.rm = FALSE, ...)
+  params <- list2(parse = parse, ...)
+  stat <- StatFilter
   if (repel) {
     geom <- GeomTextRepel
   } else {
     geom <- GeomText
     params$check_overlap <- check_overlap
+    if (check_overlap && is.null(data)) {
+      stat <- StatReverse
+    }
   }
 
   mapping <- aes_intersect(mapping, aes(x = x, y = y))
   layer(
-    data = data, mapping = mapping, stat = StatFilter, geom = geom,
+    data = data, mapping = mapping, stat = stat, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = FALSE,
     params = params
   )
@@ -101,9 +105,9 @@ geom_node_label <- function(mapping = NULL, data = NULL, position = 'identity',
     }
     position <- position_nudge(nudge_x, nudge_y)
   }
-  params <- list(
+  params <- list2(
     parse = parse, label.padding = label.padding,
-    label.r = label.r, label.size = label.size, na.rm = FALSE, ...
+    label.r = label.r, label.size = label.size, ...
   )
   if (repel) {
     geom <- GeomLabelRepel

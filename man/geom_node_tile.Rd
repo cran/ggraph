@@ -58,7 +58,7 @@ treemap drawing
 \section{Aesthetics}{
 
 \code{geom_treemap} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x}
 \item \strong{y}
@@ -76,7 +76,7 @@ automatically set, but can be overridden.
 \examples{
 # Create a graph of the flare class system
 library(tidygraph)
-flareGraph <- tbl_graph(flare$vertices, flare$edges) \%>\%
+flareGraph <- tbl_graph(flare$vertices, flare$edges) |>
   mutate(
     class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
       if (dist <= 1) {
@@ -98,6 +98,7 @@ Other geom_node_*:
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_point}()},
 \code{\link{geom_node_range}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_text}()},
 \code{\link{geom_node_voronoi}()}
 }

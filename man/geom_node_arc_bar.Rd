@@ -57,7 +57,7 @@ as created with circular partition layouts
 \section{Aesthetics}{
 
 \code{geom_node_point} understand the following aesthetics. Bold aesthetics are
-automatically set, but can be overridden.
+automatically set, but can be overwritten.
 \itemize{
 \item \strong{x0}
 \item \strong{y0}
@@ -86,6 +86,7 @@ Other geom_node_*:
 \code{\link{geom_node_circle}()},
 \code{\link{geom_node_point}()},
 \code{\link{geom_node_range}()},
+\code{\link{geom_node_sf}()},
 \code{\link{geom_node_text}()},
 \code{\link{geom_node_tile}()},
 \code{\link{geom_node_voronoi}()}
