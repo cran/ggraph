@@ -34,7 +34,7 @@
 #' @examples
 #' # Create a graph of the flare class system
 #' library(tidygraph)
-#' flareGraph <- tbl_graph(flare$vertices, flare$edges) |>
+#' flareGraph <- tbl_graph(flare$vertices, flare$edges) %>%
 #'   mutate(
 #'     class = map_bfs_chr(node_is_root(), .f = function(node, dist, path, ...) {
 #'       if (dist <= 1) {
@@ -46,7 +46,7 @@
 #'
 #' ggraph(flareGraph, 'treemap', weight = size) +
 #'   geom_node_tile(aes(fill = class, filter = leaf, alpha = depth), colour = NA) +
-#'   geom_node_tile(aes(size = depth), colour = 'white') +
+#'   geom_node_tile(aes(linewidth = depth), colour = 'white') +
 #'   scale_alpha(range = c(1, 0.5), guide = 'none') +
 #'   scale_size(range = c(4, 0.2), guide = 'none')
 #' @export

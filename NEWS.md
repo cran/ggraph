@@ -1,3 +1,7 @@
+# ggraph 2.2.1
+
+* Rolling back use of native pipe (#364 and #365)
+
 # ggraph 2.2.0
 
 * Fix a precision bug in circle pack layout (#345)
