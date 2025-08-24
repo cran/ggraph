@@ -16,9 +16,9 @@ graph <- as_tbl_graph(
 graph
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  ggraph(graph, layout = 'fr', weights = "weight") +
-#    geom_edge_link() +
-#    geom_node_point()
+# ggraph(graph, layout = 'fr', weights = "weight") +
+#   geom_edge_link() +
+#   geom_node_point()
 
 ## -----------------------------------------------------------------------------
 ggraph(graph, layout = 'fr', weights = weight) + 
